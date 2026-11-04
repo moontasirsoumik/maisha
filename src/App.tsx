@@ -6,7 +6,17 @@ import { Heading } from '@astryxdesign/core/Heading';
 import { Link } from '@astryxdesign/core/Link';
 import { Stack } from '@astryxdesign/core/Stack';
 import { Text } from '@astryxdesign/core/Text';
-import { contact, profile, projects, tools, type Project, type ProjectImage, type ProjectSection } from './content/projects';
+import {
+  contact,
+  portfolioCover,
+  portrait,
+  profile,
+  projects,
+  tools,
+  type Project,
+  type ProjectImage,
+  type ProjectSection,
+} from './content/projects';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -24,7 +34,9 @@ function useRoute() {
   return {
     hash,
     projectSlug: hash.match(/^#\/projects\/([^/?#]+)/)?.[1] ?? null,
-    anchor: hash.match(/^#\/projects\/[^/?#]+#(.+)$/)?.[1] ?? null,
+    projectAnchor: hash.match(/^#\/projects\/[^/?#]+#(.+)$/)?.[1] ?? null,
+    isAbout: hash === '#about' || /^#\/about(?:#|$)/.test(hash),
+    aboutAnchor: hash.match(/^#\/about#(.+)$/)?.[1] ?? null,
   };
 }
 
@@ -41,7 +53,7 @@ function useReducedMotion() {
   return reduced;
 }
 
-function useAtlasMotion(scopeRef: React.RefObject<HTMLElement | null>, key: string) {
+function useFolioMotion(scopeRef: React.RefObject<HTMLElement | null>, key: string, kind: 'home' | 'about' | 'project') {
   const reducedMotion = useReducedMotion();
 
   useLayoutEffect(() => {
@@ -57,34 +69,77 @@ function useAtlasMotion(scopeRef: React.RefObject<HTMLElement | null>, key: stri
     const context = gsap.context(() => {
       const media = gsap.matchMedia();
 
+      const reveal = (selector: string, offset = 32) => {
+        root.querySelectorAll<HTMLElement>(selector).forEach((element, index) => {
+          gsap.fromTo(
+            element,
+            { autoAlpha: 0, y: offset, clipPath: 'inset(8% 0 0 0)' },
+            {
+              autoAlpha: 1,
+              y: 0,
+              clipPath: 'inset(0% 0 0 0)',
+              duration: 1,
+              delay: Math.min(index * 0.06, 0.24),
+              ease: 'expo.out',
+              scrollTrigger: { trigger: element, start: 'top 86%', once: true },
+            },
+          );
+        });
+      };
+
       gsap.fromTo(
         root.querySelectorAll<HTMLElement>('[data-load]'),
         { autoAlpha: 0, y: 18 },
         { autoAlpha: 1, y: 0, duration: 0.7, stagger: 0.06, ease: 'expo.out', clearProps: 'transform' },
       );
 
-      gsap.utils.toArray<HTMLElement>(root.querySelectorAll<HTMLElement>('[data-sheet]')).forEach((sheet, index) => {
-        gsap.fromTo(
-          sheet,
-          { autoAlpha: 0, y: 34, clipPath: 'inset(8% 0 0 0)' },
-          {
-            autoAlpha: 1,
-            y: 0,
+      if (kind === 'home') {
+        const cover = root.querySelector<HTMLElement>('[data-cover]');
+        const coverCopy = root.querySelector<HTMLElement>('[data-cover-copy]');
+        const coverPlate = root.querySelector<HTMLElement>('[data-cover-plate]');
+
+        media.add(`(min-width: ${STORY_BREAKPOINT + 1}px)`, () => {
+          if (cover && coverCopy && coverPlate) {
+            gsap.timeline({
+              scrollTrigger: {
+                trigger: cover,
+                start: 'top top',
+                end: '+=78%',
+                pin: true,
+                scrub: 1,
+                anticipatePin: 1,
+              },
+            })
+              .to(coverCopy, { yPercent: -12, autoAlpha: 0.35, ease: 'none' }, 0)
+              .to(coverPlate, { yPercent: -8, scale: 0.94, clipPath: 'inset(0 0 0 12%)', ease: 'none' }, 0);
+          }
+        });
+
+        reveal('[data-plate]', 44);
+      }
+
+      if (kind === 'about') {
+        reveal('[data-about-group]', 30);
+        reveal('[data-about-reference]', 44);
+        const aboutPortrait = root.querySelector<HTMLElement>('[data-about-portrait]');
+        if (aboutPortrait) {
+          gsap.fromTo(aboutPortrait, { clipPath: 'inset(18% 0 0 0)' }, {
             clipPath: 'inset(0% 0 0 0)',
-            duration: 1,
-            delay: Math.min(index * 0.03, 0.18),
+            duration: 1.4,
             ease: 'expo.out',
-            scrollTrigger: { trigger: sheet, start: 'top 88%', once: true },
-          },
-        );
-      });
+            scrollTrigger: { trigger: aboutPortrait, start: 'top 82%', once: true },
+          });
+        }
+      }
+
+      if (kind === 'project') reveal('[data-sheet]', 34);
 
       media.add(`(min-width: ${STORY_BREAKPOINT + 1}px)`, () => {
-        gsap.utils.toArray<HTMLElement>(root.querySelectorAll<HTMLElement>('[data-atlas-parallax]')).forEach((image) => {
+        root.querySelectorAll<HTMLElement>('[data-atlas-parallax]').forEach((image) => {
           gsap.to(image, {
-            yPercent: -4,
+            yPercent: -3,
             ease: 'none',
-            scrollTrigger: { trigger: image, start: 'top bottom', end: 'bottom top', scrub: 1.2 },
+            scrollTrigger: { trigger: image, start: 'top bottom', end: 'bottom top', scrub: 1.4 },
           });
         });
       });
@@ -96,10 +151,10 @@ function useAtlasMotion(scopeRef: React.RefObject<HTMLElement | null>, key: stri
       context.revert();
       root.classList.remove('motion-ready', 'motion-reduced');
     };
-  }, [key, reducedMotion, scopeRef]);
+  }, [key, kind, reducedMotion, scopeRef]);
 }
 
-function Arrow({ direction = 'right' }: { direction?: 'right' | 'left' | 'down' | 'up' }) {
+function Arrow({ direction = 'right' }: { direction?: 'right' | 'left' | 'up' | 'down' }) {
   const rotation = direction === 'down' ? 90 : direction === 'up' ? -90 : direction === 'left' ? 180 : 0;
   return (
     <span className="arrow-icon" style={{ transform: `rotate(${rotation}deg)` }} aria-hidden="true">
@@ -134,15 +189,21 @@ function ImageFrame({ image, className = '', priority = false, parallax = false 
   );
 }
 
-function SiteHeader({ projectPage = false }: { projectPage?: boolean }) {
+function SiteHeader({ projectPage = false, aboutPage = false }: { projectPage?: boolean; aboutPage?: boolean }) {
   return (
     <header className="site-header">
       <div className="site-header__inner">
         <Link className="site-logo" href="#/" aria-label="Maisha Mahpara home">Maisha Mahpara</Link>
         <nav className="site-nav" aria-label="Primary navigation">
-          {projectPage ? <Link href="#/">Back to work</Link> : <>
-            <Link href="#work">Work</Link>
-            <Link href="#about">About</Link>
+          {projectPage ? <>
+            <Link href="#/">Back to projects</Link>
+            <Link href="#/about">About</Link>
+          </> : aboutPage ? <>
+            <Link href="#/">Projects</Link>
+            <Link href="#/about#contact">Contact</Link>
+          </> : <>
+            <Link href="#work">Projects</Link>
+            <Link href="#/about">About</Link>
             <Link href="#contact">Contact</Link>
           </>}
         </nav>
@@ -151,176 +212,70 @@ function SiteHeader({ projectPage = false }: { projectPage?: boolean }) {
   );
 }
 
-function AtlasHero() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const activeProject = projects[activeIndex];
-
+function FolioCover() {
   return (
-    <section className="atlas-hero" aria-labelledby="hero-title">
-      <div className="atlas-hero__topline" data-load>
-        <Eyebrow>Architecture / Portfolio</Eyebrow>
-        <span>Selected work, 01 to 05</span>
+    <section className="folio-cover" data-cover aria-labelledby="cover-title">
+      <div className="folio-cover__copy" data-cover-copy data-load>
+        <div className="folio-cover__number">00</div>
+        <Eyebrow>Architecture portfolio</Eyebrow>
+        <Heading level={1} id="cover-title"><span>Maisha</span> <em>Mahpara</em></Heading>
+        <Text as="p" type="large">I begin with the place, the people, and the everyday life a project needs to hold.</Text>
+        <Button className="folio-button" label="Open projects" href="#work" variant="ghost" endContent={<Arrow />} />
       </div>
-      <div className="atlas-hero__intro" data-load>
-        <Eyebrow>Maisha Mahpara / RUET</Eyebrow>
-        <Heading level={1} id="hero-title">Projects shaped by place, program, and use.</Heading>
-        <Text as="p" type="large">I am an architecture graduate working across conceptual design, visualisation, 3D modelling, architectural photography, and graphic design.</Text>
-        <Button className="atlas-button" label="Browse the work" href="#work" variant="ghost" endContent={<Arrow />} />
+      <div className="folio-cover__plate" data-cover-plate data-load>
+        <ImageFrame image={portfolioCover} priority />
       </div>
-      <div className="atlas-hero__feature" aria-live="polite" data-sheet>
-        {projects.map((project, index) => (
-          <div className={`atlas-feature-image${index === activeIndex ? ' is-active' : ''}`} key={project.slug} aria-hidden={index !== activeIndex}>
-            <img src={project.hero.src} alt={index === activeIndex ? project.hero.alt : ''} width={project.hero.width} height={project.hero.height} style={{ objectPosition: project.hero.focalPoint }} />
-          </div>
-        ))}
-        <div className="atlas-hero__feature-caption">
-          <span>{activeProject.number} / {activeProject.category}</span>
-          <strong>{activeProject.title}</strong>
-          <span>{activeProject.subtitle}</span>
-        </div>
-      </div>
-      <div className="atlas-hero__register" data-sheet>
-        <div className="register-heading">
-          <Eyebrow>The archive</Eyebrow>
-          <span>Choose a study</span>
-        </div>
-        {projects.map((project, index) => (
-          <a
-            key={project.slug}
-            href={`#/projects/${project.slug}`}
-            className={`register-row${index === activeIndex ? ' is-active' : ''}`}
-            onPointerEnter={() => setActiveIndex(index)}
-            onFocus={() => setActiveIndex(index)}
-            aria-current={index === activeIndex ? 'true' : undefined}
-          >
-            <span className="register-row__number">{project.number}</span>
-            <span className="register-row__title"><strong>{project.title}</strong><small>{project.subtitle}</small></span>
-            <span className="register-row__category">{project.category}</span>
-            <Arrow />
-          </a>
-        ))}
+      <div className="folio-cover__meta" data-load>
+        <span>Maisha Mahpara</span>
+        <span>RUET / Architecture</span>
+        <span>01—05 / Selected work</span>
       </div>
     </section>
   );
 }
 
-function AboutSection() {
+function ProjectPlate({ project, index }: { project: Project; index: number }) {
   return (
-    <section className="about-section atlas-section" id="about" aria-labelledby="about-title">
-      <div className="section-index" data-sheet><Eyebrow>About / 01</Eyebrow><span>01</span></div>
-      <div className="about-section__copy" data-sheet>
-        <Heading level={2} id="about-title">{profile.title}</Heading>
-        <p>{profile.body}</p>
-        <p>{profile.close}</p>
-        <Link className="text-link" href={`mailto:${contact.email}`}>Write to me <Arrow /></Link>
-      </div>
-      <div className="about-section__portrait" data-sheet>
-        <ImageFrame image={{ src: '/assets/portfolio/profile.webp', alt: 'Portrait of Maisha Mahpara seated in a garden', width: 740, height: 920, caption: 'Maisha Mahpara' }} />
-      </div>
-    </section>
+    <a className={`project-plate project-plate--${index + 1} project-plate--${project.visualMode}`} href={`#/projects/${project.slug}`} data-plate>
+      <ImageFrame image={project.hero} parallax />
+      <span className="project-plate__label">
+        <span>{project.number} / {project.category}</span>
+        <strong>{project.title}</strong>
+        <small>{project.subtitle}</small>
+      </span>
+      <Arrow />
+    </a>
   );
 }
 
-const methodStages = [
-  {
-    id: 'read',
-    eyebrow: '01 / Read the place',
-    title: 'I start with the evidence around a site.',
-    body: 'I look at settlement patterns, cultural practice, climate, material, and the everyday activities a project needs to support.',
-    image: projects[0].sections[0].images[0],
-  },
-  {
-    id: 'organize',
-    eyebrow: '02 / Organize the program',
-    title: 'I turn research into a spatial framework.',
-    body: 'I use plans, sections, and movement to connect learning, performance, gathering, living, and making.',
-    image: projects[1].sections[1].images[0],
-  },
-  {
-    id: 'make',
-    eyebrow: '03 / Make space',
-    title: 'I test the architecture through detail and image.',
-    body: 'Material studies, furniture details, sections, and visualisation help me understand how a project will be experienced.',
-    image: projects[2].sections[0].images[0],
-  },
-];
-
-function ProcessSection() {
+function ArchiveMosaic() {
   return (
-    <section className="process-section atlas-section" id="process" aria-labelledby="process-title">
-      <div className="section-index" data-sheet><Eyebrow>Process / 02</Eyebrow><span>02</span></div>
-      <div className="process-section__heading" data-sheet>
-        <Heading level={2} id="process-title">From observation to space.</Heading>
-        <p>I move from research and site analysis to plans, sections, details, and visualisation. Each project changes the order, but not the attention.</p>
-      </div>
-      <div className="process-sheets">
-        {methodStages.map((stage, index) => (
-          <article className={`process-sheet process-sheet--${index + 1}`} data-sheet key={stage.id}>
-            <div className="process-sheet__image"><ImageFrame image={stage.image} parallax /></div>
-            <div className="process-sheet__copy">
-              <Eyebrow>{stage.eyebrow}</Eyebrow>
-              <Heading level={3}>{stage.title}</Heading>
-              <p>{stage.body}</p>
-            </div>
-          </article>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function WorkIndex() {
-  return (
-    <section className="work-section atlas-section" id="work" aria-labelledby="work-title">
-      <div className="section-index" data-sheet><Eyebrow>Selected work / 03</Eyebrow><span>03</span></div>
-      <div className="work-section__heading" data-sheet>
-        <Heading level={2} id="work-title">Five studies of shared life.</Heading>
+    <section className="archive-mosaic" id="work" data-archive aria-labelledby="archive-title">
+      <div className="archive-mosaic__intro" data-plate>
+        <div className="folio-section-number">01</div>
+        <Eyebrow>Projects / Selected work</Eyebrow>
+        <Heading level={2} id="archive-title">Five studies of place and use.</Heading>
         <p>Academic projects across cultural infrastructure, interior space, vertical cities, and learning environments.</p>
       </div>
-      <div className="work-list">
-        {projects.map((project) => (
-          <a className={`work-entry work-entry--${project.visualMode}`} href={`#/projects/${project.slug}`} key={project.slug} data-sheet>
-            <div className="work-entry__meta"><span>{project.number}</span><span>{project.category}</span></div>
-            <div className="work-entry__title"><Heading level={3}>{project.title}</Heading><p>{project.subtitle}</p></div>
-            <ImageFrame image={project.hero} className="work-entry__image" parallax />
-            <div className="work-entry__action"><span>View project</span><Arrow /></div>
-          </a>
-        ))}
+      <div className="archive-mosaic__grid">
+        {projects.map((project, index) => <ProjectPlate key={project.slug} project={project} index={index} />)}
       </div>
     </section>
   );
 }
 
-function PracticeSection() {
+function HomeContact() {
   return (
-    <section className="practice-section atlas-section" aria-labelledby="practice-title">
-      <div className="section-index" data-sheet><Eyebrow>Practice / 04</Eyebrow><span>04</span></div>
-      <div className="practice-section__copy" data-sheet>
-        <Heading level={2} id="practice-title">I work between architecture, image, and graphic composition.</Heading>
-        <Text as="p" type="large">I use visualisation and graphic design to test ideas, communicate atmosphere, and make a project legible from its first diagram to its final view.</Text>
-      </div>
-      <div className="practice-section__tools" data-sheet>
-        <Eyebrow>Working tools</Eyebrow>
-        <Stack className="tool-list" gap={2}>
-          {tools.map((tool) => <span key={tool}>{tool}</span>)}
-        </Stack>
-      </div>
-    </section>
-  );
-}
-
-function ContactSection() {
-  return (
-    <section className="contact-section atlas-section" id="contact" aria-labelledby="contact-title">
-      <div className="section-index section-index--light" data-sheet><Eyebrow>Contact / 05</Eyebrow><span>05</span></div>
-      <div className="contact-section__copy" data-sheet>
-        <Heading level={2} id="contact-title">I would like to hear about the work you are building.</Heading>
-        <p>I am available for conversations about architecture, visualisation, and design.</p>
+    <section className="home-contact" id="contact" aria-labelledby="home-contact-title">
+      <div className="folio-section-number">02</div>
+      <div className="home-contact__copy">
+        <Eyebrow>Contact</Eyebrow>
+        <Heading level={2} id="home-contact-title">I am open to conversations about architecture, visualisation, and design.</Heading>
         <Link className="contact-email" href={`mailto:${contact.email}`}>{contact.email}<Arrow /></Link>
       </div>
-      <div className="contact-section__details" data-sheet>
+      <div className="home-contact__details">
         {contact.phones.map((phone) => <a href={`tel:${phone.replace(/\s/g, '')}`} key={phone}>{phone}</a>)}
-        <span>Architecture / Research / Visualisation</span>
+        <Link href="#/about">Read about my practice</Link>
       </div>
     </section>
   );
@@ -343,22 +298,97 @@ function Footer() {
 
 function HomePage({ hash }: { hash: string }) {
   const scopeRef = useRef<HTMLDivElement>(null);
-  useAtlasMotion(scopeRef, 'home');
+  useFolioMotion(scopeRef, 'home', 'home');
 
   useEffect(() => {
     if (hash === '#/') window.scrollTo({ top: 0, behavior: 'auto' });
   }, [hash]);
 
   return (
-    <div className="site-shell atlas-root" id="top" ref={scopeRef}>
+    <div className="site-shell folio-root" id="top" ref={scopeRef}>
+      <a className="skip-link" href="#main-content">Skip to content</a>
       <SiteHeader />
       <main id="main-content">
-        <AtlasHero />
-        <AboutSection />
-        <ProcessSection />
-        <WorkIndex />
-        <PracticeSection />
-        <ContactSection />
+        <FolioCover />
+        <ArchiveMosaic />
+        <HomeContact />
+      </main>
+      <Footer />
+    </div>
+  );
+}
+
+const aboutReferences = [projects[0], projects[1], projects[4]];
+
+function AboutPage({ anchor }: { anchor: string | null }) {
+  const scopeRef = useRef<HTMLDivElement>(null);
+  useFolioMotion(scopeRef, 'about', 'about');
+
+  useEffect(() => {
+    if (anchor) {
+      window.requestAnimationFrame(() => document.getElementById(anchor)?.scrollIntoView({ behavior: 'auto', block: 'start' }));
+    } else {
+      window.scrollTo({ top: 0, behavior: 'auto' });
+    }
+  }, [anchor]);
+
+  return (
+    <div className="site-shell about-root folio-root" id="top" ref={scopeRef}>
+      <a className="skip-link" href="#main-content">Skip to content</a>
+      <SiteHeader aboutPage />
+      <main id="main-content">
+        <section className="about-hero" aria-labelledby="about-title">
+          <div className="about-hero__number" data-load>01</div>
+          <div className="about-hero__label" data-load><Eyebrow>About / Maisha Mahpara</Eyebrow><span>Architecture graduate / RUET</span></div>
+          <div className="about-hero__statement" data-about-group>
+            <Heading level={1} id="about-title">{profile.title}</Heading>
+          </div>
+          <div className="about-hero__portrait" data-about-portrait>
+            <ImageFrame image={portrait} priority />
+          </div>
+          <div className="about-hero__caption" data-load><span>01 / 04</span><span>Profile</span></div>
+        </section>
+        <section className="about-practice" aria-labelledby="practice-title">
+          <div className="folio-section-number" data-about-group>02</div>
+          <div className="about-practice__heading" data-about-group>
+            <Eyebrow>Practice</Eyebrow>
+            <Heading level={2} id="practice-title">I work from what a place already holds.</Heading>
+          </div>
+          <div className="about-practice__copy" data-about-group>
+            <p>{profile.body}</p>
+            <p>{profile.close}</p>
+          </div>
+        </section>
+        <section className="about-references" aria-labelledby="references-title">
+          <div className="folio-section-number" data-about-group>03</div>
+          <div className="about-references__heading" data-about-group>
+            <Eyebrow>Selected references</Eyebrow>
+            <Heading level={2} id="references-title">The projects behind the way I work.</Heading>
+          </div>
+          <div className="about-references__grid">
+            {aboutReferences.map((project) => (
+              <a className="about-reference" data-about-reference href={`#/projects/${project.slug}`} key={project.slug}>
+                <ImageFrame image={project.hero} />
+                <span>{project.number} / {project.category}</span>
+                <strong>{project.title}</strong>
+                <small>{project.subtitle}</small>
+              </a>
+            ))}
+          </div>
+        </section>
+        <section className="about-tools" id="contact" aria-labelledby="tools-title">
+          <div className="folio-section-number" data-about-group>04</div>
+          <div className="about-tools__heading" data-about-group>
+            <Eyebrow>Tools and contact</Eyebrow>
+            <Heading level={2} id="tools-title">I use drawings, images, and software to make the work clear.</Heading>
+          </div>
+          <div className="about-tools__register" data-about-group>
+            <span>Working tools</span>
+            <Stack className="tool-register" gap={2}>{tools.map((tool) => <span key={tool}>{tool}</span>)}</Stack>
+            <Link className="contact-email" href={`mailto:${contact.email}`}>{contact.email}<Arrow /></Link>
+            <div className="about-tools__phones">{contact.phones.map((phone) => <a href={`tel:${phone.replace(/\s/g, '')}`} key={phone}>{phone}</a>)}</div>
+          </div>
+        </section>
       </main>
       <Footer />
     </div>
@@ -372,11 +402,7 @@ function ProjectFacts({ project }: { project: Project }) {
     ...(project.client ? [['Client', project.client] as [string, string]] : []),
   ];
 
-  return (
-    <dl className="project-facts">
-      {facts.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}
-    </dl>
-  );
+  return <dl className="project-facts">{facts.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>;
 }
 
 function ChapterIndex({ project }: { project: Project }) {
@@ -401,9 +427,7 @@ function ProjectChapter({ section, index }: { section: ProjectSection; index: nu
       </div>
       <div className="project-chapter__content">
         {section.body && <p>{section.body}</p>}
-        <div className="project-chapter__images">
-          {section.images.map((image, imageIndex) => <ImageFrame image={image} key={`${image.src}-${imageIndex}`} parallax={imageIndex === 0} />)}
-        </div>
+        <div className="project-chapter__images">{section.images.map((image, imageIndex) => <ImageFrame image={image} key={`${image.src}-${imageIndex}`} parallax={imageIndex === 0} />)}</div>
       </div>
     </article>
   );
@@ -421,11 +445,7 @@ function ProjectNavigation({ project }: { project: Project }) {
         {[previousProject, nextProject].map((item, itemIndex) => (
           <a href={`#/projects/${item.slug}`} className={`project-transition${itemIndex === 0 ? ' project-transition--previous' : ''}`} key={item.slug} data-sheet>
             <ImageFrame image={item.hero} />
-            <span className="project-transition__copy">
-              <Eyebrow>{itemIndex === 0 ? 'Previous project' : 'Next project'} / {item.number}</Eyebrow>
-              <strong>{item.title}</strong>
-              <span>{item.subtitle}</span>
-            </span>
+            <span className="project-transition__copy"><Eyebrow>{itemIndex === 0 ? 'Previous project' : 'Next project'} / {item.number}</Eyebrow><strong>{item.title}</strong><span>{item.subtitle}</span></span>
             <Arrow direction={itemIndex === 0 ? 'left' : 'right'} />
           </a>
         ))}
@@ -436,27 +456,20 @@ function ProjectNavigation({ project }: { project: Project }) {
 
 function ProjectPage({ project, anchor }: { project: Project; anchor: string | null }) {
   const scopeRef = useRef<HTMLDivElement>(null);
-  useAtlasMotion(scopeRef, project.slug);
+  useFolioMotion(scopeRef, project.slug, 'project');
 
   useEffect(() => {
-    if (anchor) {
-      window.requestAnimationFrame(() => document.getElementById(anchor)?.scrollIntoView({ behavior: 'auto', block: 'start' }));
-    } else {
-      window.scrollTo({ top: 0, behavior: 'auto' });
-    }
+    if (anchor) window.requestAnimationFrame(() => document.getElementById(anchor)?.scrollIntoView({ behavior: 'auto', block: 'start' }));
+    else window.scrollTo({ top: 0, behavior: 'auto' });
   }, [project.slug, anchor]);
 
   return (
-    <div className={`site-shell atlas-root project-root project-root--${project.visualMode}`} id="top" ref={scopeRef}>
+    <div className={`site-shell folio-root project-root project-root--${project.visualMode}`} id="top" ref={scopeRef}>
       <SiteHeader projectPage />
       <main id="main-content">
         <section className="case-hero atlas-section" aria-labelledby="case-title">
-          <div className="case-hero__meta" data-load><a className="back-link" href="#/">← Back to work</a><span>{project.number} / {project.category}</span></div>
-          <div className="case-hero__copy" data-load>
-            <Eyebrow>{project.category}</Eyebrow>
-            <Heading level={1} type="display-1" id="case-title">{project.title}</Heading>
-            <p>{project.subtitle}</p>
-          </div>
+          <div className="case-hero__meta" data-load><a className="back-link" href="#/">Back to work</a><span>{project.number} / {project.category}</span></div>
+          <div className="case-hero__copy" data-load><Eyebrow>{project.category}</Eyebrow><Heading level={1} type="display-1" id="case-title">{project.title}</Heading><p>{project.subtitle}</p></div>
           <ImageFrame image={project.hero} className="case-hero__image" priority parallax />
         </section>
         <section className="case-intro atlas-section" data-sheet>
@@ -465,9 +478,7 @@ function ProjectPage({ project, anchor }: { project: Project; anchor: string | n
           <div className="case-intro__tags"><Eyebrow>Keywords</Eyebrow>{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
         </section>
         <ChapterIndex project={project} />
-        <section className={`project-story project-story--${project.visualMode}`} aria-label={`${project.title} story`}>
-          {project.sections.map((section, index) => <ProjectChapter key={section.id} section={section} index={index} />)}
-        </section>
+        <section className={`project-story project-story--${project.visualMode}`} aria-label={`${project.title} story`}>{project.sections.map((section, index) => <ProjectChapter key={section.id} section={section} index={index} />)}</section>
         <ProjectNavigation project={project} />
       </main>
       <Footer />
@@ -477,20 +488,17 @@ function ProjectPage({ project, anchor }: { project: Project; anchor: string | n
 
 function NotFound() {
   return (
-    <div className="site-shell atlas-root not-found" id="top">
+    <div className="site-shell folio-root not-found" id="top">
       <SiteHeader />
-      <main id="main-content">
-        <Eyebrow>Archive / 404</Eyebrow>
-        <Heading level={1}>This project is not in the folio.</Heading>
-        <a className="text-link" href="#/">Return to the portfolio <Arrow /></a>
-      </main>
+      <main id="main-content"><Eyebrow>Archive / 404</Eyebrow><Heading level={1}>This project is not in the folio.</Heading><a className="text-link" href="#/">Return to the portfolio <Arrow /></a></main>
     </div>
   );
 }
 
 export function App() {
-  const { hash, projectSlug, anchor } = useRoute();
+  const { hash, projectSlug, projectAnchor, isAbout, aboutAnchor } = useRoute();
   const project = projectSlug ? projects.find((item) => item.slug === projectSlug) : null;
   if (projectSlug && !project) return <NotFound />;
-  return project ? <ProjectPage project={project} anchor={anchor} /> : <HomePage hash={hash} />;
+  if (isAbout) return <AboutPage anchor={aboutAnchor} />;
+  return project ? <ProjectPage project={project} anchor={projectAnchor} /> : <HomePage hash={hash} />;
 }

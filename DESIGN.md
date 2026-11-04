@@ -2,7 +2,7 @@
 
 ## Direction
 
-Material Atlas: a recruiter or collaborator reviews Maisha's work as a tactile architecture folio on a bright studio desk. The interface is built from the same evidence as the portfolio: drawing sheets, plans, site analysis, material details, and renderings. Work appears before biography, and project imagery defines the rhythm.
+Art-book catalogue: a recruiter or collaborator moves through Maisha's work as a quiet architecture portfolio on a bright studio desk. The interface takes its restraint from the PDF cover and its visual rhythm from the actual work: drawing sheets, plans, site analysis, material details, and renderings. The landing page behaves like a cover and archive; About / 01 is a separate identity sheet.
 
 Avoid projection-room templates, giant name heroes, random symbols, decorative line fragments, grain, reading rails, ornamental circles, and any motion that does not explain a project transition.
 
@@ -27,6 +27,6 @@ Avoid projection-room templates, giant name heroes, random symbols, decorative l
 
 ## Layout and motion
 
-Use a 12-column editorial grid, varied vertical rhythm, full-bleed image sheets, and project-specific compositions. The homepage opens on a browsable work archive, then moves through profile, process, selected work, practice, and contact. Case studies use non-pinned folio chapters with inline chapter navigation.
+Use a 12-column editorial grid, varied vertical rhythm, serif-led display moments, full-bleed image plates, and project-specific compositions. The homepage is a short cover, archive mosaic, and contact close. About / 01 carries profile, practice, selected references, tools, and contact. Case studies use non-pinned folio chapters with inline chapter navigation.
 
 GSAP ScrollTrigger is limited to scoped image-sheet reveals, bounded parallax, and slow crop transitions. Animate transforms, opacity, and clip paths only. Never hijack scroll or animate layout dimensions. All contexts are destroyed on route changes. Reduced motion removes spatial movement and preserves content visibility with short fades.

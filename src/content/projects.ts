@@ -42,6 +42,7 @@ export type ContactInfo = {
 };
 
 const assetDimensions: Record<string, [number, number]> = {
+  cover: [893, 1263],
   'cultural-hub-analysis': [1786, 1263],
   'cultural-hub-hero-v2': [2200, 1558],
   'cultural-hub-plans': [1786, 1263],
@@ -53,6 +54,7 @@ const assetDimensions: Record<string, [number, number]> = {
   'highrise-structure': [1786, 1263],
   'interior-detail': [1786, 1263],
   'interior-hero-v2': [2200, 1137],
+  profile: [896, 896],
   'thesis-detail': [1786, 1263],
   'thesis-hero-v2': [2200, 1557],
   'thesis-plan': [1786, 1263],
@@ -71,6 +73,9 @@ export const contact: ContactInfo = {
   email: 'mahparamaisha0@gmail.com',
   phones: ['+880 177 645 0288', '+880 153 763 5389'],
 };
+
+export const portfolioCover = image('cover', 'The cover of Maisha Mahpara\'s architecture portfolio.', 'Portfolio cover');
+export const portrait = image('profile', 'Portrait of Maisha Mahpara seated in a garden.', 'Maisha Mahpara');
 
 export const profile = {
   title: 'I look at people, culture, climate, and daily life before I draw the building.',
