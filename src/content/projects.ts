@@ -8,8 +8,6 @@ export type ProjectImage = {
 };
 
 export type ProjectVisualMode = 'landscape' | 'courtyard' | 'interior' | 'vertical' | 'campus';
-export type SectionMotion = 'wipe' | 'split' | 'stack' | 'focus';
-
 export type ProjectSection = {
   id: string;
   eyebrow: string;
@@ -17,7 +15,6 @@ export type ProjectSection = {
   body?: string;
   images: ProjectImage[];
   layout: 'split' | 'wide' | 'gallery' | 'diagram';
-  motion: SectionMotion;
 };
 
 export type Project = {
@@ -105,7 +102,6 @@ export const projects: Project[] = [
         body: 'I began with ethnographic research, field surveys, and community engagement. Rangamati is home to twelve indigenous communities whose cultural identity is under pressure from inadequate infrastructure and dominant mainstream influences, so I framed the project before making a formal proposal.',
         images: [image('thesis-process', 'A thesis spread showing site analysis, problem framing, project aims, and cultural research.')],
         layout: 'wide',
-        motion: 'wipe',
       },
       {
         id: 'landscape',
@@ -114,7 +110,6 @@ export const projects: Project[] = [
         body: 'I arranged the museum, academy, dormitory, shops, pavilions, and gathering spaces around the site, connecting cultural programs through a shared landscape and movement system.',
         images: [image('thesis-plan', 'A masterplan and site strategy spread for the Ethnic Cultural Institute.')],
         layout: 'diagram',
-        motion: 'stack',
       },
       {
         id: 'details',
@@ -123,7 +118,6 @@ export const projects: Project[] = [
         body: 'I developed material and structural details for the museum, dormitory, restaurant, and academy, including the roof, circulation, and elevated building elements shown in the drawings.',
         images: [image('thesis-detail', 'Sections and material details for museum, dormitory, restaurant, and academy spaces.')],
         layout: 'wide',
-        motion: 'split',
       },
       {
         id: 'in-use',
@@ -135,7 +129,6 @@ export const projects: Project[] = [
           image('thesis-hero-v2', 'A landscape view of the institute with a stepped amphitheatre and open pavilion.'),
         ],
         layout: 'gallery',
-        motion: 'focus',
       },
     ],
   },
@@ -159,7 +152,6 @@ export const projects: Project[] = [
         body: 'I framed culture as a daily exchange rather than an occasional event. Learn, foster, and exhibit became three overlapping public actions that structure the building and its landscape.',
         images: [image('cultural-hub-analysis', 'A cultural hub spread showing site analysis, concept diagrams, and the open-every-day strategy.')],
         layout: 'wide',
-        motion: 'focus',
       },
       {
         id: 'levels',
@@ -168,7 +160,6 @@ export const projects: Project[] = [
         body: 'I organized the cultural academy, performance, exhibition, and gathering programs across the floor plans shown for Medley.',
         images: [image('cultural-hub-plans', 'Ground, first, and second floor plans for Medley.')],
         layout: 'diagram',
-        motion: 'split',
       },
       {
         id: 'section',
@@ -177,7 +168,6 @@ export const projects: Project[] = [
         body: 'I used sections and elevations to study the cultural hub, its courtyard, and the relationship between the academy, performance spaces, and public circulation.',
         images: [image('cultural-hub-sections', 'Sections and elevations of Medley, including the central courtyard.')],
         layout: 'wide',
-        motion: 'wipe',
       },
       {
         id: 'public-life',
@@ -186,7 +176,6 @@ export const projects: Project[] = [
         body: 'I studied the entrance, courtyard, academy, circulation, and gathering spaces through the project visualizations.',
         images: [image('cultural-hub-visuals', 'A visual collage of the cultural hub entrance, courtyard, academy, and circulation spaces.')],
         layout: 'gallery',
-        motion: 'focus',
       },
     ],
   },
@@ -209,7 +198,6 @@ export const projects: Project[] = [
         body: 'I developed furniture details for a bistro that combines a cafe atmosphere with acoustic sessions, jazz nights, open mic sessions, and other live music events.',
         images: [image('interior-detail', 'Furniture and interior detail drawings for Music Bistro.')],
         layout: 'wide',
-        motion: 'focus',
       },
     ],
   },
@@ -234,7 +222,6 @@ export const projects: Project[] = [
         body: 'I began with climate, pollution, wind, and program, then organized the tower as a vertical zoning diagram for retail, offices, hospitality, and public functions.',
         images: [image('highrise-hero', 'A highrise analysis spread showing climate, site, environmental aims, and vertical zoning.')],
         layout: 'wide',
-        motion: 'wipe',
       },
       {
         id: 'stack',
@@ -243,7 +230,6 @@ export const projects: Project[] = [
         body: 'I stacked retail, offices, hotel, mechanical zones, and public functions into a clear vertical sequence across the ground, bank, corporate office, hotel, and typical floor plans.',
         images: [image('highrise-plans', 'Ground, bank, corporate office, hotel, and typical floor plans for the skyscraper.')],
         layout: 'diagram',
-        motion: 'stack',
       },
       {
         id: 'structure',
@@ -252,7 +238,6 @@ export const projects: Project[] = [
         body: 'I studied a structural system of diagrid and mega columns, alongside the skeleton slab model shown in the structural drawings.',
         images: [image('highrise-structure', 'Section, elevation, diagrid structural system, and skeleton slab model.')],
         layout: 'wide',
-        motion: 'split',
       },
     ],
   },
@@ -276,7 +261,6 @@ export const projects: Project[] = [
         body: 'I gave practical education a spatial identity. Workshops, classrooms, language labs, computers, and accommodation are connected by shared outdoor spaces and clear circulation.',
         images: [image('youth-drawings', 'Concept, floor plan, north-west elevation, and section for Empower.')],
         layout: 'wide',
-        motion: 'stack',
       },
     ],
   },
