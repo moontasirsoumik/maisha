@@ -1691,3 +1691,22 @@ body {
     margin-top: 1rem;
   }
 }
+
+/* Keep editorial headings balanced without breaking a word to satisfy a narrow character cap. */
+.folio-root h1,
+.folio-root h2,
+.folio-root h3,
+.folio-root p {
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+}
+
+.folio-root .archive-mosaic__intro h2 { max-width: 20ch; }
+.folio-root .profile-section__heading h2 { max-width: 18ch; }
+.folio-root .approach-section__heading h2 { max-width: 16ch; }
+.folio-root .tools-section__heading h2 { max-width: 20ch; }
+.folio-root .home-contact__copy h2 { max-width: 22ch; }
+.folio-root .case-hero__copy h1 { max-width: 18ch; }
+.folio-root .project-chapter__heading h2 { max-width: 20ch; }
+.folio-root.not-found h1 { max-width: 18ch; }
