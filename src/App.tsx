@@ -196,8 +196,7 @@ function FolioCover() {
   return (
     <section className="folio-cover" data-cover aria-labelledby="cover-title">
       <div className="folio-cover__copy" data-cover-copy data-load>
-        <div className="folio-cover__number">00</div>
-        <Eyebrow>Architecture portfolio</Eyebrow>
+        <Eyebrow>Architecture graduate portfolio</Eyebrow>
         <Heading level={1} id="cover-title"><span>Maisha</span> <em>Mahpara</em></Heading>
         <Text as="p" type="large">I begin with the place, the people, and the everyday life a project needs to hold.</Text>
         <Button className="folio-button" label="Open projects" href="#projects" variant="ghost" endContent={<Arrow />} />

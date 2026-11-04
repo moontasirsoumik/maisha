@@ -1149,14 +1149,20 @@ body {
 .folio-cover {
   width: 100%;
   max-width: none;
-  min-height: calc(100svh - 5.5rem);
-  padding: clamp(3rem, 6vw, 6rem) max(1.5rem, calc((100% - 1540px) / 2)) clamp(2rem, 4vw, 4rem);
+  height: max(42rem, calc(100svh - 5.5rem));
+  min-height: 0;
+  grid-template-rows: minmax(0, 1fr) auto;
+  padding: clamp(2rem, 4vw, 4rem) clamp(2rem, 4vw, 5rem) 0;
+  overflow: clip;
   background: var(--paper);
 }
 
 .folio-cover__copy {
   grid-column: 1 / span 6;
+  grid-row: 1;
+  align-self: center;
   padding-left: clamp(0rem, 2vw, 2rem);
+  padding-bottom: clamp(3rem, 8vh, 7rem);
 }
 
 .folio-cover__number {
@@ -1165,26 +1171,35 @@ body {
 
 .folio-cover__copy h1 {
   max-width: none;
-  font-size: clamp(4.8rem, 9.2vw, 10.5rem);
+  font-size: clamp(4.8rem, 8.6vw, 10rem);
   line-height: 0.77;
 }
 
 .folio-cover__copy > p {
-  max-width: 32rem;
+  max-width: 27rem;
+  padding-left: 1rem;
+  border-left: 1px solid var(--brick);
   font-size: clamp(1.25rem, 2vw, 1.8rem);
 }
 
 .folio-cover__plate {
-  grid-column: 6 / -1;
+  grid-column: 4 / -1;
+  grid-row: 1;
+  align-self: center;
   width: 100%;
   max-width: none;
   padding-left: clamp(0rem, 2vw, 2rem);
+  transform: translateY(1.5rem);
 }
 
 .folio-cover__plate .image-window {
-  aspect-ratio: 1.22;
+  aspect-ratio: 1.52;
   box-shadow: none;
   background: var(--paper-deep);
+}
+
+.folio-cover__plate img {
+  object-position: 50% 72%;
 }
 
 .folio-cover__plate .image-caption {
@@ -1194,13 +1209,14 @@ body {
 .folio-cover__meta {
   top: 1.15rem;
   bottom: auto;
-  left: max(1.5rem, calc((100% - 1540px) / 2));
-  right: max(1.5rem, calc((100% - 1540px) / 2));
+  left: clamp(2rem, 4vw, 5rem);
+  right: clamp(2rem, 4vw, 5rem);
   font-size: 0.78rem;
 }
 
 .folio-cover__project-strip {
   grid-column: 1 / -1;
+  grid-row: 2;
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   align-self: end;
@@ -1469,12 +1485,16 @@ body {
 
   .folio-cover {
     width: 100%;
+    height: auto;
+    min-height: 0;
+    overflow: visible;
     padding: 3.5rem 1rem 1.5rem;
   }
 
   .folio-cover__copy {
     grid-column: auto;
     padding-left: 0;
+    padding-bottom: 0;
   }
 
   .folio-cover__copy h1 {
@@ -1484,6 +1504,7 @@ body {
   .folio-cover__plate {
     grid-column: auto;
     padding-left: 0;
+    transform: none;
   }
 
   .folio-cover__meta {
