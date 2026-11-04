@@ -182,8 +182,8 @@ function SiteHeader({ projectPage = false }: { projectPage?: boolean }) {
         <Link className="site-logo" href="#/" aria-label="Maisha Mahpara home">Maisha Mahpara</Link>
         <nav className="site-nav" aria-label="Primary navigation">
           {projectPage ? <Link href="#/">Back to portfolio</Link> : <>
-            <Link href="#projects">Projects</Link>
             <Link href="#profile">Profile</Link>
+            <Link href="#projects">Projects</Link>
             <Link href="#contact">Contact</Link>
           </>}
         </nav>
@@ -207,7 +207,7 @@ function FolioCover() {
       <div className="folio-cover__meta" data-load>
         <span>Maisha Mahpara</span>
         <span>RUET / Architecture</span>
-        <span>01—05 / Selected work</span>
+        <span>01 / 05 / Selected work</span>
       </div>
       <nav className="folio-cover__project-strip" aria-label="Project index" data-load>
         {projects.map((project) => (
@@ -239,7 +239,7 @@ function ArchiveMosaic() {
   return (
     <section className="archive-mosaic" id="projects" data-archive aria-labelledby="archive-title">
       <div className="archive-mosaic__intro" data-plate>
-        <div className="folio-section-number">01</div>
+        <div className="folio-section-number">02</div>
         <Eyebrow>Projects / Selected work</Eyebrow>
         <Heading level={2} id="archive-title">Five studies of place and use.</Heading>
         <p>Academic projects across cultural infrastructure, interior space, vertical cities, and learning environments.</p>
@@ -271,7 +271,7 @@ function HomeContact() {
 function ProfileSection() {
   return (
     <section className="profile-section" id="profile" aria-labelledby="profile-title">
-      <div className="profile-section__number" data-section-reveal>02</div>
+      <div className="profile-section__number" data-section-reveal>01</div>
       <div className="profile-section__heading" data-section-reveal>
         <Eyebrow>Profile</Eyebrow>
         <Heading level={2} id="profile-title">{profile.title}</Heading>
@@ -383,8 +383,8 @@ function HomePage({ hash }: { hash: string }) {
       <main id="main-content">
         <FolioCover />
         <ProfileSection />
-        <ApproachSection />
         <ArchiveMosaic />
+        <ApproachSection />
         <ToolsSection />
         <HomeContact />
       </main>
