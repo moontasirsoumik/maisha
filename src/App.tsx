@@ -72,11 +72,10 @@ function useFolioMotion(scopeRef: React.RefObject<HTMLElement | null>, key: stri
         root.querySelectorAll<HTMLElement>(selector).forEach((element, index) => {
           gsap.fromTo(
             element,
-            { autoAlpha: 0, y: offset, clipPath: 'inset(8% 0 0 0)' },
+            { autoAlpha: 0, y: offset },
             {
               autoAlpha: 1,
               y: 0,
-              clipPath: 'inset(0% 0 0 0)',
               duration: 1,
               delay: Math.min(index * 0.06, 0.24),
               ease: 'expo.out',
@@ -258,11 +257,11 @@ function HomeContact() {
       <div className="home-contact__copy">
         <Eyebrow>Contact</Eyebrow>
         <Heading level={2} id="home-contact-title">I am open to conversations about architecture, visualisation, and design.</Heading>
-        <Link className="contact-email" href={`mailto:${contact.email}`}>{contact.email}<Arrow /></Link>
+        <Link className="contact-email" color="inherit" href={`mailto:${contact.email}`}>{contact.email}<Arrow /></Link>
       </div>
       <div className="home-contact__details">
         {contact.phones.map((phone) => <a href={`tel:${phone.replace(/\s/g, '')}`} key={phone}>{phone}</a>)}
-        <Link href="#profile">Read about my practice</Link>
+        <Link color="inherit" href="#profile">Read about my practice</Link>
       </div>
     </section>
   );

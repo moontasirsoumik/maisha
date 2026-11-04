@@ -1632,8 +1632,17 @@ body {
 .folio-root .tools-section__heading h2,
 .folio-root .home-contact__copy h2,
 .folio-root .project-chapter__heading h2 {
-  line-height: 1;
-  padding-bottom: 0.08em;
+  line-height: 1.08;
+  padding-bottom: 0.18em;
+}
+
+.home-contact .home-contact__details a,
+.home-contact .home-contact__details .astryx-Link {
+  color: var(--paper-bright);
+}
+
+.home-contact .contact-email {
+  color: var(--paper-bright);
 }
 
 /* Landing cover redesign: a deliberate two-column folio plate with no text/image collision. */
