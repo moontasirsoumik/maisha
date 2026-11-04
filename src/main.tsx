@@ -1,7 +1,7 @@
 import '@astryxdesign/core/reset.css';
 import '@astryxdesign/core/astryx.css';
 import '@fontsource-variable/bricolage-grotesque';
-import '@fontsource-variable/source-sans-3';
+import '@fontsource-variable/plus-jakarta-sans';
 import './styles.css';
 
 import { Theme } from '@astryxdesign/core/theme';

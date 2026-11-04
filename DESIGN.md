@@ -8,8 +8,9 @@ Avoid projection-room templates, giant name heroes, random symbols, decorative l
 
 ## Typography
 
-- Display: Bricolage Grotesque variable, structural and expressive without forcing artificial line breaks.
-- Body: Source Sans 3 variable, readable and neutral.
+- Display: existing editorial serif stack for the cover, name, and major statements.
+- Supporting display: Bricolage Grotesque variable for structural labels and project metadata.
+- Body: Plus Jakarta Sans variable, clear and contemporary.
 - Use fluid display scale, balanced headings, 65ch maximum body measure, and short tracked labels only for metadata.
 
 ## Color tokens

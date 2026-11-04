@@ -8,7 +8,6 @@ import { Stack } from '@astryxdesign/core/Stack';
 import { Text } from '@astryxdesign/core/Text';
 import {
   contact,
-  portfolioCover,
   portrait,
   profile,
   projects,
@@ -53,7 +52,7 @@ function useReducedMotion() {
   return reduced;
 }
 
-function useFolioMotion(scopeRef: React.RefObject<HTMLElement | null>, key: string, kind: 'home' | 'about' | 'project') {
+function useFolioMotion(scopeRef: React.RefObject<HTMLElement | null>, key: string, kind: 'home' | 'project') {
   const reducedMotion = useReducedMotion();
 
   useLayoutEffect(() => {
@@ -116,20 +115,7 @@ function useFolioMotion(scopeRef: React.RefObject<HTMLElement | null>, key: stri
         });
 
         reveal('[data-plate]', 44);
-      }
-
-      if (kind === 'about') {
-        reveal('[data-about-group]', 30);
-        reveal('[data-about-reference]', 44);
-        const aboutPortrait = root.querySelector<HTMLElement>('[data-about-portrait]');
-        if (aboutPortrait) {
-          gsap.fromTo(aboutPortrait, { clipPath: 'inset(18% 0 0 0)' }, {
-            clipPath: 'inset(0% 0 0 0)',
-            duration: 1.4,
-            ease: 'expo.out',
-            scrollTrigger: { trigger: aboutPortrait, start: 'top 82%', once: true },
-          });
-        }
+        reveal('[data-section-reveal]', 34);
       }
 
       if (kind === 'project') reveal('[data-sheet]', 34);
@@ -189,21 +175,15 @@ function ImageFrame({ image, className = '', priority = false, parallax = false 
   );
 }
 
-function SiteHeader({ projectPage = false, aboutPage = false }: { projectPage?: boolean; aboutPage?: boolean }) {
+function SiteHeader({ projectPage = false }: { projectPage?: boolean }) {
   return (
     <header className="site-header">
       <div className="site-header__inner">
         <Link className="site-logo" href="#/" aria-label="Maisha Mahpara home">Maisha Mahpara</Link>
         <nav className="site-nav" aria-label="Primary navigation">
-          {projectPage ? <>
-            <Link href="#/">Back to projects</Link>
-            <Link href="#/about">About</Link>
-          </> : aboutPage ? <>
-            <Link href="#/">Projects</Link>
-            <Link href="#/about#contact">Contact</Link>
-          </> : <>
-            <Link href="#work">Projects</Link>
-            <Link href="#/about">About</Link>
+          {projectPage ? <Link href="#/">Back to portfolio</Link> : <>
+            <Link href="#projects">Projects</Link>
+            <Link href="#profile">Profile</Link>
             <Link href="#contact">Contact</Link>
           </>}
         </nav>
@@ -220,16 +200,24 @@ function FolioCover() {
         <Eyebrow>Architecture portfolio</Eyebrow>
         <Heading level={1} id="cover-title"><span>Maisha</span> <em>Mahpara</em></Heading>
         <Text as="p" type="large">I begin with the place, the people, and the everyday life a project needs to hold.</Text>
-        <Button className="folio-button" label="Open projects" href="#work" variant="ghost" endContent={<Arrow />} />
+        <Button className="folio-button" label="Open projects" href="#projects" variant="ghost" endContent={<Arrow />} />
       </div>
       <div className="folio-cover__plate" data-cover-plate data-load>
-        <ImageFrame image={portfolioCover} priority />
+        <ImageFrame image={projects[0].hero} priority parallax />
       </div>
       <div className="folio-cover__meta" data-load>
         <span>Maisha Mahpara</span>
         <span>RUET / Architecture</span>
         <span>01—05 / Selected work</span>
       </div>
+      <nav className="folio-cover__project-strip" aria-label="Project index" data-load>
+        {projects.map((project) => (
+          <a href={`#/projects/${project.slug}`} key={project.slug}>
+            <span>{project.number}</span>
+            <strong>{project.title}</strong>
+          </a>
+        ))}
+      </nav>
     </section>
   );
 }
@@ -250,7 +238,7 @@ function ProjectPlate({ project, index }: { project: Project; index: number }) {
 
 function ArchiveMosaic() {
   return (
-    <section className="archive-mosaic" id="work" data-archive aria-labelledby="archive-title">
+    <section className="archive-mosaic" id="projects" data-archive aria-labelledby="archive-title">
       <div className="archive-mosaic__intro" data-plate>
         <div className="folio-section-number">01</div>
         <Eyebrow>Projects / Selected work</Eyebrow>
@@ -267,7 +255,7 @@ function ArchiveMosaic() {
 function HomeContact() {
   return (
     <section className="home-contact" id="contact" aria-labelledby="home-contact-title">
-      <div className="folio-section-number">02</div>
+      <div className="folio-section-number">05</div>
       <div className="home-contact__copy">
         <Eyebrow>Contact</Eyebrow>
         <Heading level={2} id="home-contact-title">I am open to conversations about architecture, visualisation, and design.</Heading>
@@ -275,7 +263,87 @@ function HomeContact() {
       </div>
       <div className="home-contact__details">
         {contact.phones.map((phone) => <a href={`tel:${phone.replace(/\s/g, '')}`} key={phone}>{phone}</a>)}
-        <Link href="#/about">Read about my practice</Link>
+        <Link href="#profile">Read about my practice</Link>
+      </div>
+    </section>
+  );
+}
+
+function ProfileSection() {
+  return (
+    <section className="profile-section" id="profile" aria-labelledby="profile-title">
+      <div className="profile-section__number" data-section-reveal>02</div>
+      <div className="profile-section__heading" data-section-reveal>
+        <Eyebrow>Profile</Eyebrow>
+        <Heading level={2} id="profile-title">{profile.title}</Heading>
+      </div>
+      <div className="profile-section__portrait" data-section-reveal>
+        <ImageFrame image={portrait} />
+      </div>
+      <div className="profile-section__copy" data-section-reveal>
+        <p>{profile.body}</p>
+        <p>{profile.close}</p>
+        <Link className="text-link" href="#projects">See the projects <Arrow /></Link>
+      </div>
+    </section>
+  );
+}
+
+const approachStages = [
+  {
+    eyebrow: '01 / Read the place',
+    title: 'Research before form.',
+    body: 'I look at settlement patterns, cultural practice, climate, material, and the daily activities a project needs to support.',
+    image: projects[0].sections[0].images[0],
+  },
+  {
+    eyebrow: '02 / Organize the program',
+    title: 'Plans make relationships visible.',
+    body: 'I use plans, sections, and movement to connect learning, performance, gathering, living, and making.',
+    image: projects[1].sections[1].images[0],
+  },
+  {
+    eyebrow: '03 / Make space',
+    title: 'Images test the experience.',
+    body: 'Material studies, furniture details, and visualisation help me understand how a project will be experienced.',
+    image: projects[2].sections[0].images[0],
+  },
+];
+
+function ApproachSection() {
+  return (
+    <section className="approach-section" id="approach" aria-labelledby="approach-title">
+      <div className="approach-section__number" data-section-reveal>03</div>
+      <div className="approach-section__heading" data-section-reveal>
+        <Eyebrow>Approach</Eyebrow>
+        <Heading level={2} id="approach-title">From observation to space.</Heading>
+        <p>I move from research and site analysis to plans, sections, details, and visualisation.</p>
+      </div>
+      <div className="approach-section__grid">
+        {approachStages.map((stage, index) => (
+          <article className={`approach-plate approach-plate--${index + 1}`} data-section-reveal key={stage.eyebrow}>
+            <ImageFrame image={stage.image} />
+            <Eyebrow>{stage.eyebrow}</Eyebrow>
+            <Heading level={3}>{stage.title}</Heading>
+            <p>{stage.body}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function ToolsSection() {
+  return (
+    <section className="tools-section" id="practice" aria-labelledby="tools-title">
+      <div className="tools-section__number" data-section-reveal>04</div>
+      <div className="tools-section__heading" data-section-reveal>
+        <Eyebrow>Practice and tools</Eyebrow>
+        <Heading level={2} id="tools-title">I work between architecture, image, and graphic composition.</Heading>
+      </div>
+      <div className="tools-section__register" data-section-reveal>
+        <span>Working tools</span>
+        <Stack className="tool-register" gap={2}>{tools.map((tool) => <span key={tool}>{tool}</span>)}</Stack>
       </div>
     </section>
   );
@@ -301,7 +369,12 @@ function HomePage({ hash }: { hash: string }) {
   useFolioMotion(scopeRef, 'home', 'home');
 
   useEffect(() => {
-    if (hash === '#/') window.scrollTo({ top: 0, behavior: 'auto' });
+    if (hash === '#/') {
+      window.scrollTo({ top: 0, behavior: 'auto' });
+      return;
+    }
+    const legacyTarget = hash === '#/about' ? 'profile' : hash.match(/^#\/about#(.+)$/)?.[1];
+    if (legacyTarget) window.requestAnimationFrame(() => document.getElementById(legacyTarget)?.scrollIntoView({ behavior: 'auto', block: 'start' }));
   }, [hash]);
 
   return (
@@ -310,85 +383,11 @@ function HomePage({ hash }: { hash: string }) {
       <SiteHeader />
       <main id="main-content">
         <FolioCover />
+        <ProfileSection />
+        <ApproachSection />
         <ArchiveMosaic />
+        <ToolsSection />
         <HomeContact />
-      </main>
-      <Footer />
-    </div>
-  );
-}
-
-const aboutReferences = [projects[0], projects[1], projects[4]];
-
-function AboutPage({ anchor }: { anchor: string | null }) {
-  const scopeRef = useRef<HTMLDivElement>(null);
-  useFolioMotion(scopeRef, 'about', 'about');
-
-  useEffect(() => {
-    if (anchor) {
-      window.requestAnimationFrame(() => document.getElementById(anchor)?.scrollIntoView({ behavior: 'auto', block: 'start' }));
-    } else {
-      window.scrollTo({ top: 0, behavior: 'auto' });
-    }
-  }, [anchor]);
-
-  return (
-    <div className="site-shell about-root folio-root" id="top" ref={scopeRef}>
-      <a className="skip-link" href="#main-content">Skip to content</a>
-      <SiteHeader aboutPage />
-      <main id="main-content">
-        <section className="about-hero" aria-labelledby="about-title">
-          <div className="about-hero__number" data-load>01</div>
-          <div className="about-hero__label" data-load><Eyebrow>About / Maisha Mahpara</Eyebrow><span>Architecture graduate / RUET</span></div>
-          <div className="about-hero__statement" data-about-group>
-            <Heading level={1} id="about-title">{profile.title}</Heading>
-          </div>
-          <div className="about-hero__portrait" data-about-portrait>
-            <ImageFrame image={portrait} priority />
-          </div>
-          <div className="about-hero__caption" data-load><span>01 / 04</span><span>Profile</span></div>
-        </section>
-        <section className="about-practice" aria-labelledby="practice-title">
-          <div className="folio-section-number" data-about-group>02</div>
-          <div className="about-practice__heading" data-about-group>
-            <Eyebrow>Practice</Eyebrow>
-            <Heading level={2} id="practice-title">I work from what a place already holds.</Heading>
-          </div>
-          <div className="about-practice__copy" data-about-group>
-            <p>{profile.body}</p>
-            <p>{profile.close}</p>
-          </div>
-        </section>
-        <section className="about-references" aria-labelledby="references-title">
-          <div className="folio-section-number" data-about-group>03</div>
-          <div className="about-references__heading" data-about-group>
-            <Eyebrow>Selected references</Eyebrow>
-            <Heading level={2} id="references-title">The projects behind the way I work.</Heading>
-          </div>
-          <div className="about-references__grid">
-            {aboutReferences.map((project) => (
-              <a className="about-reference" data-about-reference href={`#/projects/${project.slug}`} key={project.slug}>
-                <ImageFrame image={project.hero} />
-                <span>{project.number} / {project.category}</span>
-                <strong>{project.title}</strong>
-                <small>{project.subtitle}</small>
-              </a>
-            ))}
-          </div>
-        </section>
-        <section className="about-tools" id="contact" aria-labelledby="tools-title">
-          <div className="folio-section-number" data-about-group>04</div>
-          <div className="about-tools__heading" data-about-group>
-            <Eyebrow>Tools and contact</Eyebrow>
-            <Heading level={2} id="tools-title">I use drawings, images, and software to make the work clear.</Heading>
-          </div>
-          <div className="about-tools__register" data-about-group>
-            <span>Working tools</span>
-            <Stack className="tool-register" gap={2}>{tools.map((tool) => <span key={tool}>{tool}</span>)}</Stack>
-            <Link className="contact-email" href={`mailto:${contact.email}`}>{contact.email}<Arrow /></Link>
-            <div className="about-tools__phones">{contact.phones.map((phone) => <a href={`tel:${phone.replace(/\s/g, '')}`} key={phone}>{phone}</a>)}</div>
-          </div>
-        </section>
       </main>
       <Footer />
     </div>
@@ -499,6 +498,6 @@ export function App() {
   const { hash, projectSlug, projectAnchor, isAbout, aboutAnchor } = useRoute();
   const project = projectSlug ? projects.find((item) => item.slug === projectSlug) : null;
   if (projectSlug && !project) return <NotFound />;
-  if (isAbout) return <AboutPage anchor={aboutAnchor} />;
+  if (isAbout) return <HomePage hash={aboutAnchor ? `#/about#${aboutAnchor}` : '#/about'} />;
   return project ? <ProjectPage project={project} anchor={projectAnchor} /> : <HomePage hash={hash} />;
 }

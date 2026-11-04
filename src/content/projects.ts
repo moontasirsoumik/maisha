@@ -74,7 +74,6 @@ export const contact: ContactInfo = {
   phones: ['+880 177 645 0288', '+880 153 763 5389'],
 };
 
-export const portfolioCover = image('cover', 'The cover of Maisha Mahpara\'s architecture portfolio.', 'Portfolio cover');
 export const portrait = image('profile', 'Portrait of Maisha Mahpara seated in a garden.', 'Maisha Mahpara');
 
 export const profile = {
