@@ -19,7 +19,7 @@ import {
 
 gsap.registerPlugin(ScrollTrigger);
 
-const STORY_BREAKPOINT = 760;
+const STORY_BREAKPOINT = 900;
 
 function useRoute() {
   const [hash, setHash] = useState(() => window.location.hash || '#/');
@@ -193,15 +193,46 @@ function SiteHeader({ projectPage = false }: { projectPage?: boolean }) {
 }
 
 function FolioCover() {
+  const titleRef = useRef<HTMLDivElement>(null);
+  const plateRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    const title = titleRef.current;
+    const plate = plateRef.current;
+    if (!title || !plate) return;
+
+    const updateOverlap = () => {
+      const titleBox = title.getBoundingClientRect();
+      const plateBox = plate.getBoundingClientRect();
+      const overlap = plateBox.left < titleBox.right
+        && plateBox.right > titleBox.left
+        && plateBox.top < titleBox.bottom
+        && plateBox.bottom > titleBox.top;
+      const start = Math.max(0, Math.min(100, ((plateBox.left - titleBox.left) / titleBox.width) * 100));
+      title.style.setProperty('--cover-overlap-start', `${start}%`);
+      title.dataset.overlap = overlap ? 'true' : 'false';
+    };
+
+    updateOverlap();
+    const observer = new ResizeObserver(updateOverlap);
+    observer.observe(title);
+    observer.observe(plate);
+    document.fonts?.ready.then(updateOverlap);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section className="folio-cover" data-cover aria-labelledby="cover-title">
       <div className="folio-cover__copy" data-cover-copy data-load>
+        <div className="folio-cover__title" ref={titleRef}>
+          <Heading level={1} id="cover-title"><span>Maisha</span> <em>Mahpara</em></Heading>
+          <div className="folio-cover__title-contrast" aria-hidden="true"><span>Maisha</span><em>Mahpara</em></div>
+        </div>
         <Eyebrow>Architecture graduate portfolio</Eyebrow>
-        <Heading level={1} id="cover-title"><span>Maisha</span> <em>Mahpara</em></Heading>
         <Text as="p" type="large">I begin with the place, the people, and the everyday life a project needs to hold.</Text>
         <Button className="folio-button" label="Open projects" href="#projects" variant="ghost" endContent={<Arrow />} />
       </div>
-      <div className="folio-cover__plate" data-cover-plate data-load>
+      <div className="folio-cover__plate" ref={plateRef} data-cover-plate data-load>
         <ImageFrame image={projects[0].hero} priority parallax />
       </div>
       <div className="folio-cover__meta" data-load>

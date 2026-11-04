@@ -1175,11 +1175,57 @@ body {
   line-height: 0.77;
 }
 
+.folio-cover__title {
+  position: relative;
+  display: inline-block;
+  width: max-content;
+  max-width: 100%;
+}
+
+.folio-cover__title h1 {
+  width: max-content;
+  max-width: 100%;
+}
+
+.folio-cover__title-contrast {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  color: var(--paper-bright);
+  mix-blend-mode: difference;
+  clip-path: inset(0 0 0 var(--cover-overlap-start, 100%));
+}
+
+.folio-cover__title-contrast span,
+.folio-cover__title-contrast em {
+  display: block;
+  font-family: var(--serif);
+  font-size: clamp(4.8rem, 8.6vw, 10rem);
+  font-weight: 400;
+  letter-spacing: -0.07em;
+  line-height: 0.77;
+}
+
+.folio-cover__title-contrast em {
+  font-style: normal;
+}
+
+.folio-cover__title[data-overlap='false'] .folio-cover__title-contrast {
+  display: none;
+}
+
+.folio-cover__copy > .eyebrow {
+  margin-top: clamp(0.35rem, 1.2vw, 1rem);
+}
+
 .folio-cover__copy > p {
-  max-width: 27rem;
+  width: min(100%, 36rem);
+  max-width: 36rem;
   padding-left: 1rem;
   border-left: 1px solid var(--brick);
   font-size: clamp(1.25rem, 2vw, 1.8rem);
+  text-wrap: pretty;
 }
 
 .folio-cover__plate {
@@ -1633,5 +1679,49 @@ body {
     opacity: 1 !important;
     transform: none !important;
     visibility: visible !important;
+  }
+}
+
+@media (min-width: 761px) and (max-width: 900px) {
+  .folio-cover {
+    display: flex;
+    height: auto;
+    min-height: calc(100svh - 5rem);
+    overflow: visible;
+    padding: 3rem 2rem 2rem;
+    gap: 2.5rem;
+  }
+
+  .folio-cover__copy {
+    display: grid;
+    padding: 1rem 0 0;
+  }
+
+  .folio-cover__copy h1,
+  .folio-cover__title-contrast span,
+  .folio-cover__title-contrast em {
+    font-size: clamp(4.5rem, 12vw, 7rem);
+  }
+
+  .folio-cover__copy > p {
+    width: min(100%, 36rem);
+  }
+
+  .folio-cover__plate {
+    width: min(84%, 42rem);
+    align-self: flex-end;
+    padding-left: 0;
+    transform: none;
+  }
+
+  .folio-cover__meta {
+    position: static;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+
+  .folio-cover__project-strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: 1rem;
   }
 }
