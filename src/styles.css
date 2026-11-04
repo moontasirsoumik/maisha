@@ -1047,9 +1047,7 @@ p {
 
   .folio-cover { display: flex; flex-direction: column; align-items: stretch; gap: 2rem; min-height: 0; padding: 3rem 0 5rem; }
   .folio-cover__copy { display: grid; padding-top: 1rem; }
-  .folio-cover__copy h1,
-  .folio-cover__title-contrast span,
-  .folio-cover__title-contrast em { max-width: none; font-size: clamp(4.2rem, 17vw, 7rem); }
+  .folio-cover__copy h1 { max-width: none; font-size: clamp(4.2rem, 17vw, 7rem); }
   .folio-cover__plate { width: min(72%, 25rem); align-self: flex-end; }
   .folio-cover__meta { position: static; flex-wrap: wrap; margin-top: 1rem; }
 
@@ -1107,9 +1105,7 @@ p {
   body { font-size: 1rem; }
   .site-header__inner, .folio-cover, .archive-mosaic, .about-hero, .atlas-section, .chapter-index, .project-story, .not-found main { width: min(100% - 1.5rem, 1540px); }
   .site-nav { gap: 0.9rem; }
-  .folio-cover__copy h1,
-  .folio-cover__title-contrast span,
-  .folio-cover__title-contrast em { font-size: clamp(3.8rem, 17vw, 5rem); }
+  .folio-cover__copy h1 { font-size: clamp(3.8rem, 17vw, 5rem); }
   .folio-cover__plate { width: 82%; }
   .project-plate:nth-child(odd), .project-plate:nth-child(even) { width: 100%; align-self: auto; }
   .about-hero__portrait { width: 88%; }
@@ -1181,74 +1177,27 @@ body {
 .folio-cover__title h1 {
   width: max-content;
   max-width: 100%;
+  -webkit-text-stroke: 1px var(--paper);
+  paint-order: stroke fill;
 }
 
-.folio-cover__title-contrast {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  color: var(--paper-bright);
-  mix-blend-mode: difference;
-  clip-path: var(--cover-overlap-clip, inset(100% 0 0 0));
-}
-
-.folio-cover__title-contrast span,
-.folio-cover__title-contrast em {
-  display: block;
-  font-family: var(--serif);
-  font-size: clamp(4.8rem, 8.6vw, 10rem);
-  font-weight: 400;
-  letter-spacing: -0.07em;
-  line-height: 0.77;
-}
-
-.folio-cover__title-contrast em {
-  font-style: normal;
-}
-
-.folio-cover__contrast-copy {
-  position: relative;
-}
-
-.folio-cover__contrast-copy > [data-cover-contrast-base] {
-  position: relative;
-}
-
-.folio-cover__contrast-copy > .folio-cover__contrast-layer {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  color: var(--paper-bright);
-  mix-blend-mode: difference;
-  clip-path: var(--cover-overlap-clip, inset(100% 0 0 0));
-}
-
-.folio-cover__contrast-layer > * {
-  color: inherit !important;
-}
-
-[data-cover-contrast][data-overlap='false'] [data-cover-contrast-layer] {
-  display: none;
-}
-
-.folio-cover__eyebrow-copy {
+.folio-cover__copy > .eyebrow {
   margin-top: clamp(0.35rem, 1.2vw, 1rem);
+  -webkit-text-stroke: 0.45px var(--paper);
+  paint-order: stroke fill;
 }
 
-.folio-cover__statement-copy {
+.folio-cover__copy > p {
   width: min(100%, 36rem);
   max-width: 36rem;
-}
-
-.folio-cover__statement-copy p {
   color: var(--ink-soft);
   line-height: 1.25;
   padding-left: 1rem;
   border-left: 1px solid var(--brick);
   font-size: clamp(1.25rem, 2vw, 1.8rem);
   text-wrap: pretty;
+  -webkit-text-stroke: 0.25px var(--paper);
+  paint-order: stroke fill;
 }
 
 .folio-cover__plate {
@@ -1720,9 +1669,7 @@ body {
     padding: 1rem 0 0;
   }
 
-  .folio-cover__copy h1,
-  .folio-cover__title-contrast span,
-  .folio-cover__title-contrast em {
+  .folio-cover__copy h1 {
     font-size: clamp(4.5rem, 12vw, 7rem);
   }
 

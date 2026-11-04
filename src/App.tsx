@@ -193,67 +193,12 @@ function SiteHeader({ projectPage = false }: { projectPage?: boolean }) {
 }
 
 function FolioCover() {
-  const coverRef = useRef<HTMLElement>(null);
-
-  useLayoutEffect(() => {
-    const cover = coverRef.current;
-    if (!cover) return;
-    const imageWindow = cover.querySelector<HTMLElement>('.image-window');
-    if (!imageWindow) return;
-
-    const updateOverlap = () => {
-      const imageBox = imageWindow.getBoundingClientRect();
-      cover.querySelectorAll<HTMLElement>('[data-cover-contrast]').forEach((target) => {
-        const base = target.querySelector<HTMLElement>('[data-cover-contrast-base]');
-        const layer = target.querySelector<HTMLElement>('[data-cover-contrast-layer]');
-        if (!base || !layer) return;
-
-        const targetBox = base.getBoundingClientRect();
-        const left = Math.max(0, Math.min(100, ((imageBox.left - targetBox.left) / targetBox.width) * 100));
-        const right = Math.max(0, Math.min(100, ((targetBox.right - imageBox.right) / targetBox.width) * 100));
-        const top = Math.max(0, Math.min(100, ((imageBox.top - targetBox.top) / targetBox.height) * 100));
-        const bottom = Math.max(0, Math.min(100, ((targetBox.bottom - imageBox.bottom) / targetBox.height) * 100));
-        const overlap = left < 100 - right && top < 100 - bottom;
-        layer.style.setProperty('--cover-overlap-clip', `inset(${top}% ${right}% ${bottom}% ${left}%)`);
-        target.dataset.overlap = overlap ? 'true' : 'false';
-      });
-    };
-
-    let frame = 0;
-    const scheduleUpdate = () => {
-      if (frame) return;
-      frame = window.requestAnimationFrame(() => {
-        frame = 0;
-        updateOverlap();
-      });
-    };
-
-    updateOverlap();
-    const observer = new ResizeObserver(scheduleUpdate);
-    observer.observe(cover);
-    observer.observe(imageWindow);
-    window.addEventListener('resize', scheduleUpdate);
-    window.addEventListener('scroll', scheduleUpdate, { passive: true });
-    document.fonts?.ready.then(scheduleUpdate);
-    return () => {
-      observer.disconnect();
-      window.removeEventListener('resize', scheduleUpdate);
-      window.removeEventListener('scroll', scheduleUpdate);
-      if (frame) window.cancelAnimationFrame(frame);
-    };
-  }, []);
-
   return (
-    <section className="folio-cover" ref={coverRef} data-cover aria-labelledby="cover-title">
+    <section className="folio-cover" data-cover aria-labelledby="cover-title">
       <div className="folio-cover__copy" data-cover-copy data-load>
-        <div className="folio-cover__title" data-cover-contrast>
-          <div data-cover-contrast-base>
-            <Heading level={1} id="cover-title"><span>Maisha</span> <em>Mahpara</em></Heading>
-          </div>
-          <div className="folio-cover__title-contrast" data-cover-contrast-layer aria-hidden="true"><span>Maisha</span><em>Mahpara</em></div>
-        </div>
-        <ContrastCopy className="folio-cover__eyebrow-copy"><Eyebrow>Architecture graduate portfolio</Eyebrow></ContrastCopy>
-        <ContrastCopy className="folio-cover__statement-copy"><Text as="p" type="large">I begin with the place, the people, and the everyday life a project needs to hold.</Text></ContrastCopy>
+        <div className="folio-cover__title"><Heading level={1} id="cover-title"><span>Maisha</span> <em>Mahpara</em></Heading></div>
+        <Eyebrow>Architecture graduate portfolio</Eyebrow>
+        <Text as="p" type="large">I begin with the place, the people, and the everyday life a project needs to hold.</Text>
         <Button className="folio-button" label="Open projects" href="#projects" variant="ghost" endContent={<Arrow />} />
       </div>
       <div className="folio-cover__plate" data-cover-plate data-load>
@@ -273,15 +218,6 @@ function FolioCover() {
         ))}
       </nav>
     </section>
-  );
-}
-
-function ContrastCopy({ children, className = '' }: { children: ReactNode; className?: string }) {
-  return (
-    <div className={`folio-cover__contrast-copy ${className}`} data-cover-contrast>
-      <div data-cover-contrast-base>{children}</div>
-      <div className="folio-cover__contrast-layer" data-cover-contrast-layer aria-hidden="true">{children}</div>
-    </div>
   );
 }
 
