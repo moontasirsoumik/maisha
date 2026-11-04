@@ -75,7 +75,7 @@ export const contact: ContactInfo = {
 export const profile = {
   title: 'I look at people, culture, climate, and daily life before I draw the building.',
   body: 'I start with site analysis, cultural practice, climate, and the everyday activities a project needs to support. In Rangamati, I studied indigenous built forms and cultural infrastructure. In Medley, I translated learn, foster, and exhibit into a public cultural hub. In Empower, I turned locally demanded skills into classrooms, workshops, and accommodation.',
-  close: 'I am an architecture graduate from RUET, working across conceptual design, visualization, 3D modeling, architectural photography, and graphic design. I aim to bring creativity, critical thinking, and collaboration to meaningful architectural practice.',
+  close: 'I am an architecture graduate from RUET. I work across conceptual design, visualization, 3D modeling, architectural photography, and graphic design.',
 };
 
 export const tools = ['AutoCAD', 'SketchUp', 'D5', 'Lumion', 'Photoshop', 'Illustrator', 'InDesign'];
@@ -142,11 +142,11 @@ export const projects: Project[] = [
     title: 'Medley',
     subtitle: 'A Multi-Cultural Hub, Khulshi',
     location: 'Khulshi, Chittagong',
-    lead: 'I designed Medley as a cultural oasis where learning, exhibition, performance, and everyday public life overlap.',
+    lead: 'I designed Medley as a multi-cultural hub where learning, exhibition, performance, and everyday public life overlap.',
     description: 'I brought academy spaces, performance venues, and interactive art spaces together in an open cultural complex. My aim was to make cultural participation part of daily life in Khulshi rather than something reserved for occasional events.',
     tags: ['Culture', 'Education', 'Performance'],
     visualMode: 'courtyard',
-    hero: image('cultural-hub-hero-v2', 'A cultural complex with curved white volumes, a public courtyard, and a green roofscape.', 'A cultural oasis inside the city, shaped around the idea of being open every day.'),
+    hero: image('cultural-hub-hero-v2', 'A cultural complex with curved white volumes, a public courtyard, and a green roofscape.', 'Medley brings learning, performance, exhibition, and gathering into one open cultural complex.'),
     sections: [
       {
         id: 'oasis',
