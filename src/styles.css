@@ -1194,7 +1194,7 @@ body {
   pointer-events: none;
   color: var(--paper-bright);
   mix-blend-mode: difference;
-  clip-path: inset(0 0 0 var(--cover-overlap-start, 100%));
+  clip-path: var(--cover-overlap-clip, inset(100% 0 0 0));
 }
 
 .folio-cover__title-contrast span,

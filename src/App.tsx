@@ -200,16 +200,17 @@ function FolioCover() {
     const title = titleRef.current;
     const plate = plateRef.current;
     if (!title || !plate) return;
+    const imageWindow = plate.querySelector<HTMLElement>('.image-window') ?? plate;
 
     const updateOverlap = () => {
       const titleBox = title.getBoundingClientRect();
-      const plateBox = plate.getBoundingClientRect();
-      const overlap = plateBox.left < titleBox.right
-        && plateBox.right > titleBox.left
-        && plateBox.top < titleBox.bottom
-        && plateBox.bottom > titleBox.top;
-      const start = Math.max(0, Math.min(100, ((plateBox.left - titleBox.left) / titleBox.width) * 100));
-      title.style.setProperty('--cover-overlap-start', `${start}%`);
+      const plateBox = imageWindow.getBoundingClientRect();
+      const left = Math.max(0, Math.min(100, ((plateBox.left - titleBox.left) / titleBox.width) * 100));
+      const right = Math.max(0, Math.min(100, ((titleBox.right - plateBox.right) / titleBox.width) * 100));
+      const top = Math.max(0, Math.min(100, ((plateBox.top - titleBox.top) / titleBox.height) * 100));
+      const bottom = Math.max(0, Math.min(100, ((titleBox.bottom - plateBox.bottom) / titleBox.height) * 100));
+      const overlap = left < 100 - right && top < 100 - bottom;
+      title.style.setProperty('--cover-overlap-clip', `inset(${top}% ${right}% ${bottom}% ${left}%)`);
       title.dataset.overlap = overlap ? 'true' : 'false';
     };
 
