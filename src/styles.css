@@ -583,7 +583,7 @@ p {
   display: grid;
   align-content: end;
   gap: 0.3rem;
-  color: oklch(95% 0.022 88 / 0.74);
+  color: var(--paper-bright);
   font-size: 0.85rem;
 }
 
@@ -594,7 +594,7 @@ p {
 
 .home-contact__details a:last-child {
   margin-top: 1.5rem;
-  color: var(--paper);
+  color: var(--paper-bright);
 }
 
 .site-footer {
@@ -604,7 +604,7 @@ p {
   width: 100%;
   padding: 1.1rem max(1.5rem, calc((100% - 1540px) / 2));
   background: var(--ink);
-  color: oklch(95% 0.022 88 / 0.6);
+  color: var(--paper);
   font-size: 0.68rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -1284,7 +1284,6 @@ body {
 
 .archive-mosaic__intro h2,
 .profile-section__heading h2,
-.approach-section__heading h2,
 .tools-section__heading h2,
 .home-contact__copy h2 {
   font-family: var(--serif);
@@ -1293,7 +1292,6 @@ body {
 }
 
 .profile-section,
-.approach-section,
 .tools-section {
   display: grid;
   grid-template-columns: minmax(7rem, 1.2fr) repeat(10, minmax(0, 1fr));
@@ -1307,7 +1305,6 @@ body {
 }
 
 .profile-section__number,
-.approach-section__number,
 .tools-section__number {
   grid-column: 1 / span 2;
   color: var(--brick);
@@ -1357,68 +1354,6 @@ body {
 
 .profile-section__copy p + p {
   font-size: 1.05rem;
-}
-
-.approach-section {
-  width: 100%;
-  max-width: none;
-  background: var(--paper-deep);
-}
-
-.approach-section__heading {
-  grid-column: 3 / span 5;
-  display: grid;
-  gap: 1.2rem;
-}
-
-.approach-section__heading h2 {
-  max-width: 8ch;
-  font-size: clamp(3rem, 5.3vw, 6.5rem);
-}
-
-.approach-section__heading p {
-  max-width: 31rem;
-  color: var(--ink-soft);
-  font-size: 1.15rem;
-}
-
-.approach-section__grid {
-  grid-column: 3 / -1;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(1rem, 3vw, 4rem);
-  margin-top: clamp(3rem, 8vw, 8rem);
-}
-
-.approach-plate {
-  display: grid;
-  align-content: start;
-  gap: 0.75rem;
-}
-
-.approach-plate--2 {
-  margin-top: clamp(3rem, 7vw, 8rem);
-}
-
-.approach-plate--3 {
-  margin-top: clamp(1rem, 3vw, 3rem);
-}
-
-.approach-plate .image-window {
-  aspect-ratio: 1.18;
-  margin-bottom: 0.45rem;
-}
-
-.approach-plate h3 {
-  font-family: var(--serif);
-  font-size: clamp(1.7rem, 2.6vw, 3rem);
-  font-weight: 400;
-}
-
-.approach-plate p {
-  max-width: 31ch;
-  color: var(--ink-soft);
-  font-size: 1rem;
 }
 
 .tools-section {
@@ -1555,7 +1490,6 @@ body {
   }
 
   .profile-section,
-  .approach-section,
   .tools-section {
     display: flex;
     flex-direction: column;
@@ -1564,13 +1498,11 @@ body {
   }
 
   .profile-section__number,
-  .approach-section__number,
   .tools-section__number {
     font-size: 4.5rem;
   }
 
   .profile-section__heading h2,
-  .approach-section__heading h2,
   .tools-section__heading h2 {
     max-width: 12ch;
     font-size: clamp(3rem, 13vw, 5.4rem);
@@ -1588,27 +1520,6 @@ body {
 
   .profile-section__copy p {
     font-size: 1.08rem;
-  }
-
-  .approach-section__grid {
-    display: flex;
-    flex-direction: column;
-    gap: 3.8rem;
-    margin-top: 1rem;
-  }
-
-  .approach-plate--2,
-  .approach-plate--3 {
-    width: 88%;
-    margin-top: 0;
-  }
-
-  .approach-plate--2 {
-    align-self: flex-end;
-  }
-
-  .approach-plate h3 {
-    font-size: 2rem;
   }
 
   .tools-section__register {
@@ -1704,12 +1615,26 @@ body {
 
 .folio-root .archive-mosaic__intro h2 { max-width: 20ch; }
 .folio-root .profile-section__heading h2 { max-width: 18ch; }
-.folio-root .approach-section__heading h2 { max-width: 16ch; }
 .folio-root .tools-section__heading h2 { max-width: 20ch; }
 .folio-root .home-contact__copy h2 { max-width: 22ch; }
 .folio-root .case-hero__copy h1 { max-width: 18ch; }
 .folio-root .project-chapter__heading h2 { max-width: 20ch; }
 .folio-root.not-found h1 { max-width: 18ch; }
+
+.folio-root h1,
+.folio-root h2,
+.folio-root h3 {
+  overflow: visible;
+}
+
+.folio-root .profile-section__heading h2,
+.folio-root .archive-mosaic__intro h2,
+.folio-root .tools-section__heading h2,
+.folio-root .home-contact__copy h2,
+.folio-root .project-chapter__heading h2 {
+  line-height: 1;
+  padding-bottom: 0.08em;
+}
 
 /* Landing cover redesign: a deliberate two-column folio plate with no text/image collision. */
 .folio-cover {

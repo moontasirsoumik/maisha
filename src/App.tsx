@@ -254,7 +254,7 @@ function ArchiveMosaic() {
 function HomeContact() {
   return (
     <section className="home-contact" id="contact" aria-labelledby="home-contact-title">
-      <div className="folio-section-number">05</div>
+      <div className="folio-section-number">04</div>
       <div className="home-contact__copy">
         <Eyebrow>Contact</Eyebrow>
         <Heading level={2} id="home-contact-title">I am open to conversations about architecture, visualisation, and design.</Heading>
@@ -288,54 +288,10 @@ function ProfileSection() {
   );
 }
 
-const approachStages = [
-  {
-    eyebrow: '01 / Read the place',
-    title: 'Research before form.',
-    body: 'I look at settlement patterns, cultural practice, climate, material, and the daily activities a project needs to support.',
-    image: projects[0].sections[0].images[0],
-  },
-  {
-    eyebrow: '02 / Organize the program',
-    title: 'Plans make relationships visible.',
-    body: 'I use plans, sections, and movement to connect learning, performance, gathering, living, and making.',
-    image: projects[1].sections[1].images[0],
-  },
-  {
-    eyebrow: '03 / Make space',
-    title: 'Images test the experience.',
-    body: 'Material studies, furniture details, and visualisation help me understand how a project will be experienced.',
-    image: projects[2].sections[0].images[0],
-  },
-];
-
-function ApproachSection() {
-  return (
-    <section className="approach-section" id="approach" aria-labelledby="approach-title">
-      <div className="approach-section__number" data-section-reveal>03</div>
-      <div className="approach-section__heading" data-section-reveal>
-        <Eyebrow>Approach</Eyebrow>
-        <Heading level={2} id="approach-title">From observation to space.</Heading>
-        <p>I move from research and site analysis to plans, sections, details, and visualisation.</p>
-      </div>
-      <div className="approach-section__grid">
-        {approachStages.map((stage, index) => (
-          <article className={`approach-plate approach-plate--${index + 1}`} data-section-reveal key={stage.eyebrow}>
-            <ImageFrame image={stage.image} />
-            <Eyebrow>{stage.eyebrow}</Eyebrow>
-            <Heading level={3}>{stage.title}</Heading>
-            <p>{stage.body}</p>
-          </article>
-        ))}
-      </div>
-    </section>
-  );
-}
-
 function ToolsSection() {
   return (
     <section className="tools-section" id="practice" aria-labelledby="tools-title">
-      <div className="tools-section__number" data-section-reveal>04</div>
+      <div className="tools-section__number" data-section-reveal>03</div>
       <div className="tools-section__heading" data-section-reveal>
         <Eyebrow>Practice and tools</Eyebrow>
         <Heading level={2} id="tools-title">I work between architecture, image, and graphic composition.</Heading>
@@ -384,7 +340,6 @@ function HomePage({ hash }: { hash: string }) {
         <FolioCover />
         <ProfileSection />
         <ArchiveMosaic />
-        <ApproachSection />
         <ToolsSection />
         <HomeContact />
       </main>
