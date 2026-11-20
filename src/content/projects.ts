@@ -1,267 +1,497 @@
-export type ProjectImage = {
-  src: string;
-  alt: string;
-  width: number;
-  height: number;
-  caption?: string;
-  focalPoint?: string;
+import type { Plate, Project } from './types';
+
+type Size = { width: number; height: number; fullWidth: number; fullHeight: number };
+
+const sizes: Record<string, Size> = {
+  'cultural-roots/01': { width: 1400, height: 990, fullWidth: 2200, fullHeight: 1556 },
+  'cultural-roots/02': { width: 1400, height: 990, fullWidth: 2200, fullHeight: 1556 },
+  'cultural-roots/03': { width: 1400, height: 990, fullWidth: 2200, fullHeight: 1556 },
+  'cultural-roots/04': { width: 1400, height: 990, fullWidth: 2200, fullHeight: 1556 },
+  'cultural-roots/05': { width: 1400, height: 990, fullWidth: 2200, fullHeight: 1556 },
+  'cultural-roots/06': { width: 1600, height: 1132, fullWidth: 2400, fullHeight: 1698 },
+  'cultural-roots/07': { width: 1400, height: 990, fullWidth: 2200, fullHeight: 1556 },
+  'cultural-roots/08': { width: 1400, height: 990, fullWidth: 2200, fullHeight: 1556 },
+  'cultural-roots/09': { width: 1600, height: 1132, fullWidth: 2400, fullHeight: 1698 },
+  'cultural-roots/10': { width: 1600, height: 1132, fullWidth: 2400, fullHeight: 1698 },
+  'cultural-roots/11': { width: 1600, height: 1132, fullWidth: 2400, fullHeight: 1698 },
+  'cultural-roots/12': { width: 1400, height: 990, fullWidth: 2200, fullHeight: 1556 },
+  'cultural-roots/13': { width: 1400, height: 990, fullWidth: 2200, fullHeight: 1556 },
+  'medley/board-01': { width: 1400, height: 990, fullWidth: 2200, fullHeight: 1556 },
+  'medley/board-02': { width: 1400, height: 990, fullWidth: 2200, fullHeight: 1556 },
+  'medley/approach': { width: 1600, height: 1067, fullWidth: 2400, fullHeight: 1600 },
+  'medley/courtyard': { width: 1600, height: 1067, fullWidth: 2400, fullHeight: 1600 },
+  'medley/plan': { width: 1167, height: 1400, fullWidth: 1833, fullHeight: 2200 },
+  'medley/section-aa': { width: 1400, height: 1079, fullWidth: 2200, fullHeight: 1695 },
+  'medley/section-bb': { width: 1400, height: 1066, fullWidth: 2200, fullHeight: 1675 },
+  'medley/elevation-1': { width: 1400, height: 1133, fullWidth: 2200, fullHeight: 1780 },
+  'medley/elevation-2': { width: 1400, height: 1121, fullWidth: 2200, fullHeight: 1762 },
+  'medley/amphitheatre': { width: 1600, height: 1065, fullWidth: 2400, fullHeight: 1598 },
+  'medley/academy': { width: 1600, height: 1065, fullWidth: 2400, fullHeight: 1598 },
+  'rajshahi/cover': { width: 1600, height: 900, fullWidth: 1920, fullHeight: 1080 },
+  'rajshahi/board-01': { width: 1400, height: 990, fullWidth: 2200, fullHeight: 1556 },
+  'rajshahi/board-02': { width: 1400, height: 990, fullWidth: 2200, fullHeight: 1556 },
+  'rajshahi/board-03': { width: 1400, height: 990, fullWidth: 2200, fullHeight: 1556 },
+  'rajshahi/board-04': { width: 1400, height: 990, fullWidth: 2200, fullHeight: 1556 },
+  'rajshahi/board-05': { width: 1400, height: 990, fullWidth: 2200, fullHeight: 1556 },
+  'urban-dwelling/cover': { width: 1600, height: 900, fullWidth: 1920, fullHeight: 1080 },
+  'urban-dwelling/board-01': { width: 1400, height: 990, fullWidth: 2200, fullHeight: 1556 },
+  'urban-dwelling/board-02': { width: 1400, height: 990, fullWidth: 2200, fullHeight: 1556 },
+  'urban-dwelling/board-03': { width: 1400, height: 990, fullWidth: 2200, fullHeight: 1556 },
+  'urban-dwelling/board-04': { width: 1400, height: 990, fullWidth: 2200, fullHeight: 1556 },
+  'nostalgia/cover': { width: 1600, height: 900, fullWidth: 1920, fullHeight: 1080 },
+  'nostalgia/render': { width: 1600, height: 900, fullWidth: 2400, fullHeight: 1350 },
+  'nostalgia/axonometric': { width: 1279, height: 1400, fullWidth: 2010, fullHeight: 2200 },
+  'music-bistro/cover': { width: 1600, height: 900, fullWidth: 2400, fullHeight: 1350 },
+  'music-bistro/board-01': { width: 1400, height: 990, fullWidth: 2200, fullHeight: 1556 },
+  'music-bistro/board-02': { width: 1400, height: 990, fullWidth: 2200, fullHeight: 1556 },
+  'music-bistro/room-1': { width: 1600, height: 900, fullWidth: 2400, fullHeight: 1350 },
+  'music-bistro/room-2': { width: 1600, height: 900, fullWidth: 2400, fullHeight: 1350 },
+  'music-bistro/room-3': { width: 1600, height: 900, fullWidth: 2400, fullHeight: 1350 },
+  'music-bistro/room-4': { width: 1600, height: 900, fullWidth: 2400, fullHeight: 1350 },
+  'living-skyscraper/cover': { width: 1024, height: 1536, fullWidth: 1024, fullHeight: 1536 },
+  'living-skyscraper/board-01': { width: 1400, height: 990, fullWidth: 2200, fullHeight: 1556 },
+  'living-skyscraper/board-02': { width: 1400, height: 990, fullWidth: 2200, fullHeight: 1556 },
+  'living-skyscraper/board-03': { width: 1400, height: 990, fullWidth: 2200, fullHeight: 1556 },
+  'empower/render': { width: 1536, height: 1024, fullWidth: 1536, fullHeight: 1024 },
+  'empower/cover': { width: 1536, height: 1024, fullWidth: 1536, fullHeight: 1024 },
+  'empower/board': { width: 1400, height: 990, fullWidth: 2200, fullHeight: 1556 },
 };
 
-export type ProjectVisualMode = 'landscape' | 'courtyard' | 'interior' | 'vertical' | 'campus';
-export type ProjectSection = {
-  id: string;
-  eyebrow: string;
-  title: string;
-  body?: string;
-  images: ProjectImage[];
-  layout: 'split' | 'wide' | 'gallery' | 'diagram';
-};
-
-export type Project = {
-  slug: string;
-  number: string;
-  category: string;
-  title: string;
-  subtitle: string;
-  location?: string;
-  client?: string;
-  lead: string;
-  description: string;
-  tags: string[];
-  visualMode: ProjectVisualMode;
-  hero: ProjectImage;
-  sections: ProjectSection[];
-};
-
-export type ContactInfo = {
-  email: string;
-  phones: string[];
-};
-
-const assetDimensions: Record<string, [number, number]> = {
-  cover: [893, 1263],
-  'cultural-hub-analysis': [1786, 1263],
-  'cultural-hub-hero-v2': [2200, 1558],
-  'cultural-hub-plans': [1786, 1263],
-  'cultural-hub-sections': [1786, 1263],
-  'cultural-hub-visuals': [1786, 1263],
-  'highrise-hero': [1786, 1263],
-  'highrise-hero-v2': [1024, 1536],
-  'highrise-plans': [1786, 1263],
-  'highrise-structure': [1786, 1263],
-  'interior-detail': [1786, 1263],
-  'interior-hero-v2': [2200, 1137],
-  profile: [896, 896],
-  'thesis-detail': [1786, 1263],
-  'thesis-hero-v2': [2200, 1557],
-  'thesis-plan': [1786, 1263],
-  'thesis-process': [1786, 1263],
-  'thesis-visuals': [1786, 1263],
-  'youth-drawings': [1786, 1263],
-  'youth-hero-v2': [1194, 844],
-};
-
-const image = (src: string, alt: string, caption?: string, focalPoint = '50% 50%'): ProjectImage => {
-  const [width, height] = assetDimensions[src];
-  return { src: `/assets/portfolio/${src}.webp`, alt, width, height, caption, focalPoint };
-};
-
-export const contact: ContactInfo = {
-  email: 'mahparamaisha0@gmail.com',
-  phones: ['+880 177 645 0288', '+880 153 763 5389'],
-};
-
-export const portrait = image('profile', 'Portrait of Maisha Mahpara seated in a garden.', 'Maisha Mahpara');
-
-export const profile = {
-  title: 'I look at people, culture, climate, and daily life before I draw the building.',
-  body: 'I start with site analysis, cultural practice, climate, and the everyday activities a project needs to support. In Rangamati, I studied indigenous built forms and cultural infrastructure. In Medley, I translated learn, foster, and exhibit into a public cultural hub. In Empower, I turned locally demanded skills into classrooms, workshops, and accommodation.',
-  close: 'I am an architecture graduate from RUET. I work across conceptual design, visualization, 3D modeling, architectural photography, and graphic design.',
-};
-
-export const tools = ['AutoCAD', 'SketchUp', 'D5', 'Lumion', 'Photoshop', 'Illustrator', 'InDesign'];
+function plate(
+  slug: string,
+  id: string,
+  alt: string,
+  caption: string,
+  kind: Plate['kind'],
+): Plate {
+  const size = sizes[`${slug}/${id}`];
+  return {
+    id,
+    src: `/work/${slug}/${id}.webp`,
+    full: `/work/${slug}/${id}-full.webp`,
+    width: size.width,
+    height: size.height,
+    alt,
+    caption,
+    kind,
+  };
+}
 
 export const projects: Project[] = [
   {
-    slug: 'thesis',
+    slug: 'cultural-roots',
     number: '01',
-    category: 'Thesis',
     title: 'Rejuvenating Cultural Roots',
-    subtitle: 'Ethnic Cultural Institute, Rangamati',
-    location: 'Rangamati',
-    lead: 'I developed an Ethnic Cultural Institute in Rangamati for cultural learning, practice, performance, and exchange.',
-    description: 'I studied how cultural values, environmental adaptation, and everyday practices shape indigenous built forms in the Chittagong Hill Tracts. My proposal brings together spaces for learning, practice, research, performance, and cultural exchange through a contemporary, culturally grounded institute.',
-    tags: ['Research', 'Cultural infrastructure', 'Community'],
-    visualMode: 'landscape',
-    hero: image('thesis-hero-v2', 'A timber and thatch cultural institute set in a green landscape with stepped seating and a pavilion.', 'View of the institute pavilions, landscape, and stepped gathering area.'),
-    sections: [
+    subtitle: 'Ethnic Cultural Institute',
+    place: 'Rangamati, Chittagong Hill Tracts',
+    year: '2025',
+    studio: 'Individual B.Arch thesis, RUET',
+    authorship: 'Individual',
+    role: 'Author. Supervisor: Tamanna Sultana Swarna.',
+    lead: 'An institute for twelve indigenous communities to learn, practise, perform, and pass on their cultures, on their own land.',
+    cover: '09',
+    hero: '01',
+    plates: [
+      plate('cultural-roots', '01', 'Thesis board introducing the cultural institute in Rangamati.', 'Opening board', 'sheet'),
+      plate('cultural-roots', '02', 'Research board on indigenous settlements in the Chittagong Hill Tracts.', 'Reading the settlements', 'sheet'),
+      plate('cultural-roots', '03', 'Site and cultural context board for the Rangamati institute.', 'Site and culture', 'sheet'),
+      plate('cultural-roots', '04', 'Concept board for a hill settlement of museum, academy, and workshops.', 'Concept', 'sheet'),
+      plate('cultural-roots', '05', 'Site strategy for the institute above Kaptai Lake.', 'Site strategy', 'sheet'),
+      plate('cultural-roots', '06', 'Masterplan of the institute stepping down to Kaptai Lake.', 'Masterplan', 'sheet'),
+      plate('cultural-roots', '07', 'Programme and circulation diagram for the cultural institute.', 'Programme', 'sheet'),
+      plate('cultural-roots', '08', 'Sections through the terraced paths and elevated structures.', 'Sections', 'sheet'),
+      plate('cultural-roots', '09', 'Bird’s-eye view of the institute from Kaptai Lake.', 'Bird’s-eye view', 'render'),
+      plate('cultural-roots', '10', 'Museum block raised on stilts above the terraces.', 'Museum block', 'render'),
+      plate('cultural-roots', '11', 'Visualization of the academy and workshop buildings.', 'Academy', 'render'),
+      plate('cultural-roots', '12', 'Material and structural detail board using bamboo, thatch, and timber.', 'Material details', 'sheet'),
+      plate('cultural-roots', '13', 'Closing thesis board of the cultural institute.', 'Closing board', 'sheet'),
+    ],
+    chapters: [
       {
         id: 'question',
         eyebrow: 'The question',
-        title: 'How can architecture hold a culture that is still living?',
-        body: 'I began with ethnographic research, field surveys, and community engagement. Rangamati is home to twelve indigenous communities whose cultural identity is under pressure from inadequate infrastructure and dominant mainstream influences, so I framed the project before making a formal proposal.',
-        images: [image('thesis-process', 'A thesis spread showing site analysis, problem framing, project aims, and cultural research.')],
-        layout: 'wide',
+        title: 'A place to hold a living culture.',
+        body: [
+          'Rangamati is home to twelve indigenous communities whose cultural identity is slowly eroding, driven by inadequate cultural infrastructure and the dominance of mainstream influences. The thesis asks how architecture can give these communities a place to learn, practise, perform, and pass on their cultures, on their own terms and on their own land.',
+        ],
+        plates: ['01', '02'],
       },
       {
-        id: 'landscape',
-        eyebrow: 'Reading the place',
-        title: 'Masterplan and settlement analysis',
-        body: 'I arranged the museum, academy, dormitory, shops, pavilions, and gathering spaces around the site, connecting cultural programs through a shared landscape and movement system.',
-        images: [image('thesis-plan', 'A masterplan and site strategy spread for the Ethnic Cultural Institute.')],
-        layout: 'diagram',
+        id: 'research',
+        eyebrow: 'Research',
+        title: 'How cultural values become built form.',
+        body: [
+          'The traditions are well documented. Their spatial practices are not. Through literature, field surveys, and conversations with community members, I studied hill and lakeside settlements: elevated structures that follow the terrain, lightweight local materials, and flexible open spaces that support communal life without formal courtyards.',
+          'I also mapped the seasonal rhythm of jhum cultivation and the Baisabi new-year festivals that shape everyday life.',
+        ],
+        plates: ['03', '04'],
       },
       {
-        id: 'details',
-        eyebrow: 'Making space',
-        title: 'Material and structural details',
-        body: 'I developed material and structural details for the museum, dormitory, restaurant, and academy, including the roof, circulation, and elevated building elements shown in the drawings.',
-        images: [image('thesis-detail', 'Sections and material details for museum, dormitory, restaurant, and academy spaces.')],
-        layout: 'wide',
+        id: 'settlement',
+        eyebrow: 'Concept',
+        title: 'A hill settlement, not a single building.',
+        body: [
+          'Museum, academy, workshops, dormitory, and ethnic shops step along the contours on stilts. Terraced paths and ramps climb from the Kaptai Lake edge, with an open performance ground at the heart of the complex.',
+          'The design builds with the steep terrain instead of cutting it, which reduces landslide risk. Bamboo, thatch, and timber detailing are drawn from local building traditions, set against modern construction where it is needed.',
+        ],
+        plates: ['05', '06', '08'],
       },
       {
         id: 'in-use',
         eyebrow: 'In use',
-        title: 'The institute in use',
-        body: 'I designed the institute as a sequence of public spaces: an entry pavilion, exhibition space, ethnic shops, academy circulation, dormitory, museum block, and Biju Ghat.',
-        images: [
-          image('thesis-visuals', 'A collage of visualizations showing the museum, dormitory, academy pavilion, entry pavilion, ethnic shops, exhibition space, and Biju Ghat.'),
-          image('thesis-hero-v2', 'A landscape view of the institute with a stepped amphitheatre and open pavilion.'),
+        title: 'Learn, exhibit, perform.',
+        body: [
+          'The institute gives the communities a shared place to learn, exhibit, and perform. The sequence moves from the lake edge through workshops and shops to the academy, the museum, and the open ground.',
         ],
-        layout: 'gallery',
+        plates: ['09', '10', '11', '12'],
       },
     ],
   },
   {
-    slug: 'cultural-hub',
+    slug: 'medley',
     number: '02',
-    category: 'Cultural Hub',
     title: 'Medley',
-    subtitle: 'A Multi-Cultural Hub, Khulshi',
-    location: 'Khulshi, Chittagong',
-    lead: 'I designed Medley as a multi-cultural hub where learning, exhibition, performance, and everyday public life overlap.',
-    description: 'I brought academy spaces, performance venues, and interactive art spaces together in an open cultural complex. My aim was to make cultural participation part of daily life in Khulshi rather than something reserved for occasional events.',
-    tags: ['Culture', 'Education', 'Performance'],
-    visualMode: 'courtyard',
-    hero: image('cultural-hub-hero-v2', 'A cultural complex with curved white volumes, a public courtyard, and a green roofscape.', 'Medley brings learning, performance, exhibition, and gathering into one open cultural complex.'),
-    sections: [
+    subtitle: 'A multi-cultural hub',
+    place: 'Khulshi, Chattogram',
+    year: 'Studio 5-1',
+    studio: 'Architecture Design Studio 5-1, B.Arch, RUET',
+    authorship: 'Individual',
+    role: 'Author of the cultural complex.',
+    lead: 'A cultural oasis on a two-acre city site: a place to learn, practise, exhibit, and celebrate, open every day.',
+    cover: 'approach',
+    hero: 'approach',
+    plates: [
+      plate('medley', 'approach', 'Street approach to Medley, with a timber screen between two perforated blocks.', 'Approach from the street', 'render'),
+      plate('medley', 'courtyard', 'Courtyard view of the cultural hub.', 'Courtyard', 'render'),
+      plate('medley', 'amphitheatre', 'Open-air amphitheatre between the academy, exhibition, and auditorium blocks.', 'Amphitheatre', 'render'),
+      plate('medley', 'academy', 'Interior of the cultural academy.', 'Academy', 'render'),
+      plate('medley', 'board-01', 'Project board for Medley: concept, site, and aerial view.', 'Project board', 'sheet'),
+      plate('medley', 'plan', 'Ground floor plan with courtyard, water body, and amphitheatre.', 'Ground floor plan', 'sheet'),
+      plate('medley', 'board-02', 'Floor plans and functional zoning for academy, exhibition, and auditorium.', 'Plans and zoning', 'sheet'),
+      plate('medley', 'section-aa', 'Section AA through the cultural hub.', 'Section AA', 'sheet'),
+      plate('medley', 'section-bb', 'Section BB through the cultural hub.', 'Section BB', 'sheet'),
+      plate('medley', 'elevation-1', 'Elevation of the cultural hub.', 'Elevation', 'sheet'),
+      plate('medley', 'elevation-2', 'Second elevation of the cultural hub.', 'Elevation', 'sheet'),
+    ],
+    chapters: [
       {
         id: 'oasis',
-        eyebrow: 'The premise',
-        title: 'Open every day',
-        body: 'I framed culture as a daily exchange rather than an occasional event. Learn, foster, and exhibit became three overlapping public actions that structure the building and its landscape.',
-        images: [image('cultural-hub-analysis', 'A cultural hub spread showing site analysis, concept diagrams, and the open-every-day strategy.')],
-        layout: 'wide',
+        eyebrow: 'Premise',
+        title: 'Open every day.',
+        body: [
+          'Medley is a cultural complex on a two-acre site in Khulshi, imagined as a cultural oasis in a busy city. The brief is a place to learn, practise, exhibit, and celebrate culture, not a building that opens only for events.',
+          'Learn, foster, and exhibit became the three public actions. An escape from everyday life, and also a way of passing cultural roots on.',
+        ],
+        plates: ['board-01', 'approach'],
       },
       {
-        id: 'levels',
-        eyebrow: 'Spatial sequence',
-        title: 'Floor plans for the cultural hub',
-        body: 'I organized the cultural academy, performance, exhibition, and gathering programs across the floor plans shown for Medley.',
-        images: [image('cultural-hub-plans', 'Ground, first, and second floor plans for Medley.')],
-        layout: 'diagram',
+        id: 'ground',
+        eyebrow: 'The ground',
+        title: 'The open space is the main room.',
+        body: [
+          'Three blocks — academy, exhibition, and auditorium — sit around a courtyard, a water body, and an amphitheatre. The ground between the buildings is the main public space, used for open-air performance, gathering, and ordinary days.',
+        ],
+        plates: ['plan', 'courtyard', 'amphitheatre'],
       },
       {
-        id: 'section',
-        eyebrow: 'Section',
-        title: 'Sections, elevations, and courtyard',
-        body: 'I used sections and elevations to study the cultural hub, its courtyard, and the relationship between the academy, performance spaces, and public circulation.',
-        images: [image('cultural-hub-sections', 'Sections and elevations of Medley, including the central courtyard.')],
-        layout: 'wide',
-      },
-      {
-        id: 'public-life',
-        eyebrow: 'Public life',
-        title: 'Visualizations of public life',
-        body: 'I studied the entrance, courtyard, academy, circulation, and gathering spaces through the project visualizations.',
-        images: [image('cultural-hub-visuals', 'A visual collage of the cultural hub entrance, courtyard, academy, and circulation spaces.')],
-        layout: 'gallery',
+        id: 'drawings',
+        eyebrow: 'Drawings',
+        title: 'Plans, sections, elevations.',
+        body: [
+          'The floor plans stack the academy, exhibition, and auditorium so each can work alone and still open onto the shared ground. Sections and elevations study the timber screen, the perforated flanks, and the courtyard between them.',
+        ],
+        plates: ['board-02', 'section-aa', 'section-bb', 'elevation-1', 'academy'],
       },
     ],
   },
   {
-    slug: 'interior',
+    slug: 'rajshahi',
     number: '03',
-    category: 'Interior',
+    title: 'Revitalizing Rajshahi',
+    subtitle: 'Public spaces along the urban spine',
+    place: 'Railgate to Padma Garden, Rajshahi',
+    year: 'Urban studio',
+    studio: 'Urban Design Studio, B.Arch, RUET',
+    authorship: 'Group',
+    role: 'Site survey, activity mapping, masterplan interventions, Padma riverfront, road sections, and the project animation.',
+    lead: 'The busiest public corridor in Rajshahi, redrawn as a shaded, walkable street from the rail gate to the river.',
+    cover: 'cover',
+    hero: 'cover',
+    video: {
+      src: '/work/rajshahi/animation.mp4',
+      poster: '/work/rajshahi/animation-poster.webp',
+      width: 854,
+      height: 480,
+      caption: 'Project animation of the spine from Railgate to Padma Garden.',
+    },
+    plates: [
+      plate('rajshahi', 'cover', 'Axonometric of the proposed Railgate plaza, cycle track, and shaded street.', 'Railgate proposal', 'render'),
+      plate('rajshahi', 'board-01', 'Site reading of the spine from Railgate to Borokuthi and the Padma.', 'Reading the spine', 'sheet'),
+      plate('rajshahi', 'board-02', 'Node-by-node analysis and proposed interventions.', 'Nodes', 'sheet'),
+      plate('rajshahi', 'board-03', 'Street sections, shade, and public-space proposals along the spine.', 'Sections and shade', 'sheet'),
+      plate('rajshahi', 'board-04', 'Padma riverfront walk, cycle track, and garden.', 'Padma Garden', 'sheet'),
+      plate('rajshahi', 'board-05', 'Closing board of the revitalized corridor.', 'The corridor', 'sheet'),
+    ],
+    chapters: [
+      {
+        id: 'spine',
+        eyebrow: 'The corridor',
+        title: 'A hot, congested street that should belong to people.',
+        body: [
+          'The commercial spine from Railgate to Borokuthi and the Padma riverfront is the busiest public corridor in Rajshahi. It is also congested, hot, polluted, and hostile to pedestrians. The project reimagines it as a comfortable, green, and walkable street.',
+        ],
+        plates: ['cover', 'board-01'],
+      },
+      {
+        id: 'survey',
+        eyebrow: 'Process',
+        title: 'The spine, walked and counted.',
+        body: [
+          'We surveyed the whole spine on foot: traffic counts at six stations across three time slots, noise and air-quality readings, and mapping of pavements, parking, vendors, street trees, sunlight, and daily activities. A node-by-node analysis showed what each junction needed.',
+          'My part was the site survey, observation, and activity mapping, then the masterplan interventions, the Padma riverfront, the road sections, and the project animation.',
+        ],
+        plates: ['board-02'],
+      },
+      {
+        id: 'nodes',
+        eyebrow: 'Interventions',
+        title: 'A chain of nodes, tied by shade.',
+        body: [
+          'The spine is a chain of nodes, each with its own intervention, tied together by a continuous shaded walkway, cycle track, and planting. Railgate becomes a linear park with an elevated shaded plaza. New Market becomes a shared space with a vendor plaza and roof garden. Pocket parks and restored ponds sit between Olokar Mor and Gonokpara. Zero Point takes vehicles below and gives the plaza back to the street. The Padma edge becomes a riverfront walk, cycle track, play zone, and watch tower.',
+          'Native shade trees, green roofs, and green facades are there to cut the urban heat.',
+        ],
+        plates: ['board-03', 'board-04', 'board-05'],
+      },
+    ],
+  },
+  {
+    slug: 'urban-dwelling',
+    number: '04',
+    title: 'Reshaping Urban Dwelling',
+    subtitle: 'An eco-community for three incomes',
+    place: 'Nader Hajir Mor, Poba, Rajshahi',
+    year: 'Housing studio',
+    studio: 'Housing Design Studio, B.Arch, RUET',
+    authorship: 'Group of six',
+    role: 'Figure-ground studies, existing tree mapping, concept and masterplan zoning, high-income apartments, and sustainable strategies.',
+    lead: 'Forty-three acres of farmland and ponds, planned as affordable, inclusive, high-density housing with a continuous green and blue belt.',
+    cover: 'cover',
+    hero: 'cover',
+    plates: [
+      plate('urban-dwelling', 'cover', 'Aerial of the housing clusters set in a green belt at Poba, Rajshahi.', 'The eco-community', 'render'),
+      plate('urban-dwelling', 'board-01', 'Uposohor study, figure-ground from 2016 to 2023, and native species survey.', 'Learning from Uposohor', 'sheet'),
+      plate('urban-dwelling', 'board-02', 'Masterplan zoning and the green and blue belt.', 'Masterplan', 'sheet'),
+      plate('urban-dwelling', 'board-03', 'Cluster plans, apartment types, and courtyard studies.', 'Clusters and homes', 'sheet'),
+      plate('urban-dwelling', 'board-04', 'Climate, shading, and sustainable strategies for the housing.', 'Climate and systems', 'sheet'),
+    ],
+    chapters: [
+      {
+        id: 'site',
+        eyebrow: 'The site',
+        title: 'Housing that keeps the open ground.',
+        body: [
+          'A 43-acre greenfield site among farmland and ponds at Nader Hajir Mor, planned as affordable, inclusive, high-density housing for three income groups.',
+          'We studied Uposohor, an existing neighbourhood of Rajshahi, layer by layer. Its figure-ground from 2016 to 2023 shows open space shrinking as buildings grow taller. That reading set the rule for this site: density without giving the ground away.',
+        ],
+        plates: ['board-01'],
+      },
+      {
+        id: 'belt',
+        eyebrow: 'Concept',
+        title: 'A green and blue belt through every cluster.',
+        body: [
+          'A continuous green and blue belt runs through the site and links every housing cluster. Zones along it serve physical health, mental health, and the environment: walking and cycle tracks, an amphitheatre, a zen garden, waterside decks, a botanical garden, and habitats for birds and butterflies surveyed in Rajshahi. About 41 percent of the site stays green and water.',
+          'Cars stay at the perimeter and in basements, so the belt remains fully pedestrian. Every cluster courtyard opens onto it.',
+        ],
+        plates: ['cover', 'board-02'],
+      },
+      {
+        id: 'homes',
+        eyebrow: 'My role',
+        title: 'From the survey to the high-income apartments.',
+        body: [
+          'I produced the figure-ground studies and the existing tree mapping, built up the concept and the masterplan zoning, designed the high-income apartments, and developed the sustainable strategies.',
+          'Homes run from 400-square-foot studios to large duplexes, grouped around light wells for daylight and cross-ventilation. Wind and radiation studies, shading louvres, green roofs and walls, solar panels, and water treatment sit in the same system.',
+        ],
+        plates: ['board-03', 'board-04'],
+      },
+    ],
+  },
+  {
+    slug: 'nostalgia',
+    number: '05',
+    title: 'Preserving Nostalgia',
+    subtitle: 'A student plaza around existing trees',
+    place: 'Tukitaki Chattar, Rajshahi University',
+    year: 'ARCH 4204',
+    studio: 'Landscape Design, RUET',
+    authorship: 'Individual',
+    role: 'Author. Course teacher: Md. Asaduzzaman.',
+    lead: 'The plaza in front of the central library, kept as the hangout it already is, and made fit to use.',
+    cover: 'cover',
+    hero: 'render',
+    plates: [
+      plate('nostalgia', 'cover', 'Axonometric of the redesigned student plaza under existing trees.', 'The plaza', 'render'),
+      plate('nostalgia', 'render', 'Shaded picnic tables and a pergola study shed under the trees.', 'Food court and study shed', 'render'),
+      plate('nostalgia', 'axonometric', 'Axonometric diagram of walkways, parking, stalls, and the open stage.', 'Axonometric diagram', 'sheet'),
+    ],
+    chapters: [
+      {
+        id: 'place',
+        eyebrow: 'The place',
+        title: 'Forty years of a small shop, and the life around it.',
+        body: [
+          'Tukitaki Chattar grew around a small shop opened some forty years ago. It became one of the liveliest student hangouts on campus: a place to eat, shop, study, meet, and perform. The project keeps that spirit and fixes what stops students from fully using it.',
+        ],
+        plates: ['cover'],
+      },
+      {
+        id: 'trees',
+        eyebrow: 'Concept',
+        title: 'The new plan is drawn around the canopies.',
+        body: [
+          'Every existing tree was mapped and kept: rain tree, siris, tamarind, and mango. The new design is laid out around their canopies.',
+          'There was no walkway or bike parking, so the plan adds paved paths and designated cycle and motorbike parking. Poor drainage and slippery paths become permeable concrete-block paving and a bioretention basin. Cooking and serving get designated counters. Waste moves behind a green wall. Eating and study get a picnic-table food court, a pergola study shed, and an open stage under the trees.',
+        ],
+        plates: ['render', 'axonometric'],
+      },
+    ],
+  },
+  {
+    slug: 'music-bistro',
+    number: '06',
     title: 'Music Bistro',
     subtitle: 'Where melody and flavour converge',
-    lead: 'I designed Music Bistro as a warm, intimate room where cafe culture and live performance share the same space.',
-    description: 'I planned the bistro for acoustic sessions, jazz nights, open mic sessions, and the quieter rituals around food and conversation. I used material warmth and furniture detail to hold both focus and informality.',
-    tags: ['Interior', 'Hospitality', 'Live music'],
-    visualMode: 'interior',
-    hero: image('interior-hero-v2', 'A warm brick and timber interior of Music Bistro with a small live music stage.', 'A room tuned for both music and conversation.'),
-    sections: [
+    place: 'Interior studio',
+    year: 'Studio 4-1',
+    studio: 'Interior Design Studio 4-1, RUET',
+    authorship: 'Group',
+    role: 'Performance stage: plan, section, and elevation.',
+    lead: 'A room that holds a cafe and a live set at the same time.',
+    cover: 'cover',
+    hero: 'cover',
+    plates: [
+      plate('music-bistro', 'cover', 'Cafe floor of Music Bistro, with brick, timber, and a stair to the upper level.', 'The room', 'render'),
+      plate('music-bistro', 'room-1', 'Interior view toward the seating and the bar.', 'Seating', 'render'),
+      plate('music-bistro', 'room-2', 'Interior view of the performance end of the bistro.', 'Toward the stage', 'render'),
+      plate('music-bistro', 'room-3', 'Detail of materials and lighting in the bistro.', 'Material and light', 'render'),
+      plate('music-bistro', 'room-4', 'Another interior view of the bistro.', 'The room, again', 'render'),
+      plate('music-bistro', 'board-01', 'Plans and sections of Music Bistro, including the performance stage.', 'Plans and stage', 'sheet'),
+      plate('music-bistro', 'board-02', 'Elevations, furniture, and interior details.', 'Details', 'sheet'),
+    ],
+    chapters: [
       {
-        id: 'atmosphere',
+        id: 'room',
         eyebrow: 'Atmosphere',
-        title: 'Furniture detail and atmosphere',
-        body: 'I developed furniture details for a bistro that combines a cafe atmosphere with acoustic sessions, jazz nights, open mic sessions, and other live music events.',
-        images: [image('interior-detail', 'Furniture and interior detail drawings for Music Bistro.')],
-        layout: 'wide',
+        title: 'Food, and a set, in the same room.',
+        body: [
+          'Music Bistro brings together the relaxed feel of a cafe and the energy of live music. Acoustic sessions, jazz nights, and open mics share the room with people who came to eat.',
+        ],
+        plates: ['cover', 'room-2'],
+      },
+      {
+        id: 'stage',
+        eyebrow: 'My role',
+        title: 'The performance stage.',
+        body: [
+          'This was a group studio. I designed the performance stage and drew its plan, section, and elevation, so the music has a clear focus without turning the cafe into an auditorium.',
+        ],
+        plates: ['board-01', 'board-02', 'room-1'],
       },
     ],
   },
   {
-    slug: 'highrise',
-    number: '04',
-    category: 'Highrise',
+    slug: 'living-skyscraper',
+    number: '07',
     title: 'Design of a Living Skyscraper',
     subtitle: 'An icon for the emerging economy',
-    location: 'New Delhi, India',
-    client: 'Reliance',
-    lead: 'I organized a mixed-use vertical hub integrating retail, corporate, hospitality, and public life.',
-    description: 'I combined a shopping mall, cineplex, food court, rentable offices, corporate headquarters, banks, banquet halls, hotels, and restaurants into a vertical urban destination. The study considers New Delhi\'s hot-dry climate, wind, air pollution, water pollution, and loss of flora and fauna.',
-    tags: ['Mixed use', 'Climate', 'Diagrid'],
-    visualMode: 'vertical',
-    hero: image('highrise-hero-v2', 'A diagrid highrise rising from a mixed-use podium in New Delhi.', 'A mixed-use highrise with a shopping mall podium and a multi-program tower.'),
-    sections: [
-      {
-        id: 'climate',
-        eyebrow: 'Climate and program',
-        title: 'A vertical mix of public and private life',
-        body: 'I began with climate, pollution, wind, and program, then organized the tower as a vertical zoning diagram for retail, offices, hospitality, and public functions.',
-        images: [image('highrise-hero', 'A highrise analysis spread showing climate, site, environmental aims, and vertical zoning.')],
-        layout: 'wide',
-      },
+    place: 'New Delhi, India',
+    year: 'Studio 3-2',
+    studio: 'Design Studio 3-2, B.Arch, RUET',
+    authorship: 'Individual',
+    role: 'Author of the mixed-use tower.',
+    lead: 'Retail, offices, and hospitality stacked into one vertical hub, carried by a diagrid.',
+    cover: 'cover',
+    hero: 'cover',
+    plates: [
+      plate('living-skyscraper', 'cover', 'Diagrid tower and landscaped podium of the living skyscraper in New Delhi.', 'The tower', 'render'),
+      plate('living-skyscraper', 'board-01', 'Climate study, programme summary, and vertical zoning diagram.', 'Climate and zoning', 'sheet'),
+      plate('living-skyscraper', 'board-02', 'Floor plans of the podium, offices, and hotel.', 'Plans', 'sheet'),
+      plate('living-skyscraper', 'board-03', 'Diagrid structure, mega columns, and tower section.', 'Structure', 'sheet'),
+    ],
+    chapters: [
       {
         id: 'stack',
-        eyebrow: 'Vertical zoning',
-        title: 'Vertical zoning and floor plans',
-        body: 'I stacked retail, offices, hotel, mechanical zones, and public functions into a clear vertical sequence across the ground, bank, corporate office, hotel, and typical floor plans.',
-        images: [image('highrise-plans', 'Ground, bank, corporate office, hotel, and typical floor plans for the skyscraper.')],
-        layout: 'diagram',
+        eyebrow: 'Programme',
+        title: 'A city, stacked.',
+        body: [
+          'A mixed-use high-rise that stacks retail, corporate, and hospitality functions into one vertical hub. The podium holds a shopping mall, cineplex, and food court. The tower above holds rentable offices, corporate headquarters, banks, banquet halls, a hotel, and restaurants.',
+        ],
+        plates: ['cover', 'board-01'],
       },
       {
-        id: 'structure',
-        eyebrow: 'Structure',
-        title: 'Diagrid, mega columns, and skeleton slab',
-        body: 'I studied a structural system of diagrid and mega columns, alongside the skeleton slab model shown in the structural drawings.',
-        images: [image('highrise-structure', 'Section, elevation, diagrid structural system, and skeleton slab model.')],
-        layout: 'wide',
+        id: 'climate',
+        eyebrow: 'Climate and structure',
+        title: 'Delhi’s wind, heat, and air, carried by a diagrid.',
+        body: [
+          'The design responds to Delhi’s composite climate, prevailing winds, and air pollution. The tower is carried by a diagrid structure with mega columns. Public life stays in the podium and the lower tower. Offices and the hotel take the floors above.',
+        ],
+        plates: ['board-02', 'board-03'],
       },
     ],
   },
   {
-    slug: 'youth-center',
-    number: '05',
-    category: 'Youth Center',
+    slug: 'empower',
+    number: '08',
     title: 'Empower',
-    subtitle: 'A skill development center for the youth',
-    location: 'Rajshahi and Chapainawabganj',
-    lead: 'I designed Empower as a context-based campus for practical education, shared learning, and youth development.',
-    description: 'I translated locally demanded skills into classrooms, language labs, computer facilities, and hands-on workshops for wood and civil works. I organized learning, living, and training as an accessible and adaptable campus with on-site accommodation.',
-    tags: ['Education', 'Workshops', 'Accommodation'],
-    visualMode: 'campus',
-    hero: image('youth-hero-v2', 'An educational campus composed of low-rise buildings, planted courtyards, and shaded paths.', 'A campus organized around practical education, workshops, and accommodation.'),
-    sections: [
+    subtitle: 'A skill development centre for youth',
+    place: 'Rajshahi',
+    year: 'Studio 3-1',
+    studio: 'Design Studio 3-1, B.Arch, RUET',
+    authorship: 'Individual',
+    role: 'Author of the campus.',
+    lead: 'Classrooms, labs, and workshops for the skills Rajshahi and Chapainawabganj actually ask for, with a place to live on site.',
+    cover: 'render',
+    hero: 'render',
+    plates: [
+      plate('empower', 'render', 'Street view of Empower, with timber screens of organic openings.', 'The campus from the street', 'render'),
+      plate('empower', 'cover', 'Cover plate of the youth skill centre.', 'Cover', 'render'),
+      plate('empower', 'board', 'Ground floor plan, north-west elevation, and section of Empower.', 'Plan, elevation, section', 'sheet'),
+    ],
+    chapters: [
       {
-        id: 'framework',
-        eyebrow: 'The framework',
-        title: 'Learning, living, making',
-        body: 'I gave practical education a spatial identity. Workshops, classrooms, language labs, computers, and accommodation are connected by shared outdoor spaces and clear circulation.',
-        images: [image('youth-drawings', 'Concept, floor plan, north-west elevation, and section for Empower.')],
-        layout: 'wide',
+        id: 'skills',
+        eyebrow: 'The brief',
+        title: 'The programme came from the local demand.',
+        body: [
+          'Empower is a skill development centre shaped by research in Rajshahi and Chapainawabganj. The skills most in demand locally became the spatial programme: classrooms, language labs, computer facilities, and hands-on wood and civil works workshops, with accommodation on site.',
+        ],
+        plates: ['render'],
+      },
+      {
+        id: 'campus',
+        eyebrow: 'The campus',
+        title: 'Learning, living, and making as one place.',
+        body: [
+          'Learning, living, and training are organised as one accessible, adaptable campus. The plan ties workshops and classrooms to shared outdoor rooms. The elevation uses a timber screen of organic openings, a biophilic analog for the planted courts behind it.',
+        ],
+        plates: ['board', 'cover'],
       },
     ],
   },
 ];
+
+export function getProject(slug: string) {
+  return projects.find((project) => project.slug === slug);
+}
+
+export function plateById(project: Project, id: string) {
+  const found = project.plates.find((item) => item.id === id);
+  if (!found) throw new Error(`Missing plate ${project.slug}/${id}`);
+  return found;
+}
+
+export function nextProject(slug: string) {
+  const index = projects.findIndex((project) => project.slug === slug);
+  return projects[(index + 1) % projects.length];
+}

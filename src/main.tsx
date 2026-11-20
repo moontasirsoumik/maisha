@@ -1,23 +1,13 @@
-import '@astryxdesign/core/reset.css';
-import '@astryxdesign/core/astryx.css';
-import '@fontsource-variable/bricolage-grotesque';
-import '@fontsource-variable/plus-jakarta-sans';
-import './styles.css';
-
-import { Theme } from '@astryxdesign/core/theme';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { App } from './App';
-import { defaultThemeSlug, themes } from './astryx-themes';
-
-if ('scrollRestoration' in window.history) {
-  window.history.scrollRestoration = 'manual';
-}
+import { BrowserRouter } from 'react-router-dom';
+import App from './App';
+import './styles.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Theme theme={themes[defaultThemeSlug]} mode="light">
+    <BrowserRouter>
       <App />
-    </Theme>
+    </BrowserRouter>
   </StrictMode>,
 );
