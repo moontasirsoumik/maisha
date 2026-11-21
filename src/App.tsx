@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { flushSync } from 'react-dom';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
-import { Nav } from './components/Nav';
+import { FolioChrome } from './folio/FolioChrome';
 import { PLATE_KEY, runTransition } from './motion/transition';
 import { About } from './pages/About';
 import { Home } from './pages/Home';
@@ -10,6 +10,7 @@ import { Work } from './pages/Work';
 export default function App() {
   const location = useLocation();
   const navigate = useNavigate();
+
   useEffect(() => {
     const onClick = (event: MouseEvent) => {
       if (event.defaultPrevented || event.button !== 0) return;
@@ -35,15 +36,13 @@ export default function App() {
       const transition = runTransition(() => {
         flushSync(() => navigate(next));
       });
-      const focusHeading = () => {
-        const heading = document.querySelector('h1');
-        if (!(heading instanceof HTMLElement)) return;
-        heading.tabIndex = -1;
-        heading.focus({ preventScroll: true });
-      };
       const finish = () => {
         sessionStorage.removeItem(PLATE_KEY);
-        focusHeading();
+        const heading = document.querySelector('h1');
+        if (heading instanceof HTMLElement) {
+          heading.tabIndex = -1;
+          heading.focus({ preventScroll: true });
+        }
       };
       if (transition) transition.finished.finally(finish);
       else finish();
@@ -53,15 +52,17 @@ export default function App() {
   }, [navigate]);
 
   useEffect(() => {
+    if (location.hash) {
+      const target = document.getElementById(location.hash.slice(1));
+      target?.scrollIntoView();
+      return;
+    }
     window.scrollTo(0, 0);
-  }, [location.pathname]);
+  }, [location.pathname, location.hash]);
 
   return (
     <>
-      <a className="skip" href="#content">
-        Skip to content
-      </a>
-      <Nav />
+      <FolioChrome />
       <main id="content">
         <Routes>
           <Route path="/" element={<Home />} />

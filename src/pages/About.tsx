@@ -1,8 +1,7 @@
 import { useRef } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useGSAP } from '@gsap/react';
-import { Contact } from '../components/Contact';
+import { Link } from 'react-router-dom';
+import { Colophon } from '../folio/Colophon';
+import { useScrollCraft } from '../folio/useScrollCraft';
 import { projects } from '../content/projects';
 import {
   activities,
@@ -19,159 +18,97 @@ import {
   workshops,
 } from '../content/site';
 
-gsap.registerPlugin(ScrollTrigger, useGSAP);
-
 export function About() {
   const root = useRef<HTMLElement>(null);
-
-  useGSAP(
-    () => {
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      const narrow = window.matchMedia('(max-width: 800px)').matches;
-      const portrait = root.current?.querySelector('.portrait');
-      if (portrait) {
-        gsap.fromTo(
-          portrait,
-          { y: narrow ? '4vh' : '8vh', rotationY: narrow ? -4 : -8, z: 80 },
-          {
-            y: 0,
-            rotationY: 0,
-            z: 0,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: portrait,
-              start: 'top bottom',
-              end: 'center center',
-              scrub: true,
-            },
-          },
-        );
-      }
-      gsap.utils.toArray<HTMLElement>('.about-practice, .fact-list, .cite-list, .role-list, .ref-list').forEach((block) => {
-        gsap.fromTo(
-          block,
-          { y: narrow ? '4vh' : '8vh', z: 40 },
-          {
-            y: 0,
-            z: 0,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: block,
-              start: 'top bottom',
-              end: 'center center',
-              scrub: true,
-            },
-          },
-        );
-      });
-    },
-    { scope: root },
-  );
+  useScrollCraft(root, 'about');
 
   return (
-    <article className="about stage-3d" ref={root}>
-      <header className="about-hero">
-        <div>
-          <p className="eyebrow">{person.role}</p>
+    <article className="folio-about" ref={root}>
+      <header className="record-open" data-sc-act="flow" data-sc-travel>
+        <div data-sc-in data-sc-stagger="40">
           <h1>{person.name}</h1>
-          <p className="about-line">{person.focus}</p>
+          <p className="record-focus">{person.focus}</p>
+          <p className="record-meta">{person.place}</p>
         </div>
-        <figure className="portrait">
-          <img
-            src={portrait.src}
-            alt={portrait.alt}
-            width={portrait.width}
-            height={portrait.height}
-            fetchPriority="high"
-            decoding="async"
-          />
+        <figure className="record-portrait">
+          <div className="record-frame">
+            <img
+              src={portrait.src}
+              alt={portrait.alt}
+              width={portrait.width}
+              height={portrait.height}
+              fetchPriority="high"
+              decoding="async"
+            />
+          </div>
         </figure>
       </header>
 
-      <section className="about-practice">
-        {practice.map((paragraph) => (
-          <p key={paragraph}>{paragraph}</p>
-        ))}
+      <section className="record-practice" data-sc-act="flow">
+        <div className="record-measure" data-sc-in data-sc-stagger="40">
+          {practice.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+        </div>
       </section>
 
-      <section className="about-block" aria-labelledby="interests-title">
-        <p className="eyebrow">Research interests</p>
-        <h2 id="interests-title">What the work follows</h2>
-        <ul className="interest-list">
+      <section className="record-block" data-sc-act="flow" aria-labelledby="interests-title">
+        <h2 id="interests-title">Interests</h2>
+        <ul data-sc-in data-sc-stagger="36">
           {interests.map((item) => (
             <li key={item}>{item}</li>
           ))}
         </ul>
       </section>
 
-      <section className="about-block" aria-labelledby="education-title">
-        <p className="eyebrow">Education</p>
+      <section className="record-block" data-sc-act="flow" aria-labelledby="education-title">
         <h2 id="education-title">Training</h2>
-        <ul className="fact-list">
+        <ol className="record-facts" data-sc-in data-sc-stagger="40">
           {education.map((item) => (
             <li key={item.title}>
               <div className="fact-head">
                 <h3>{item.title}</h3>
                 <time>{item.when}</time>
               </div>
-              <p>{item.place}</p>
+              <p className="fact-place">{item.place}</p>
               <p className="fact-note">{item.note}</p>
             </li>
           ))}
-        </ul>
+        </ol>
       </section>
 
-      <section className="about-block" aria-labelledby="experience-title">
-        <p className="eyebrow">Experience</p>
+      <section className="record-block" data-sc-act="flow" aria-labelledby="experience-title">
         <h2 id="experience-title">Practice and research</h2>
-        <ul className="fact-list">
+        <ol className="record-facts" data-sc-in data-sc-stagger="40">
           {experience.map((item) => (
             <li key={item.title}>
               <div className="fact-head">
                 <h3>{item.title}</h3>
                 <time>{item.when}</time>
               </div>
-              <p>{item.place}</p>
-              <ul className="point-list">
+              <p className="fact-place">{item.place}</p>
+              <ul className="fact-points">
                 {item.points.map((point) => (
                   <li key={point}>{point}</li>
                 ))}
               </ul>
             </li>
           ))}
-        </ul>
+        </ol>
       </section>
 
-      <section className="about-block" aria-labelledby="publications-title">
-        <p className="eyebrow">Publications</p>
-        <h2 id="publications-title">Writing</h2>
-        <ul className="cite-list">
-          {publications.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </ul>
-      </section>
-
-      <section className="about-split" aria-labelledby="skills-title">
+      <section className="record-split" data-sc-act="flow">
         <div>
-          <p className="eyebrow">Workshops and courses</p>
-          <h2>Further study</h2>
-          <ul className="fact-list">
-            {workshops.map((item) => (
-              <li key={item.title}>
-                <div className="fact-head">
-                  <h3>{item.title}</h3>
-                  <time>{item.when}</time>
-                </div>
-                <p className="fact-note">{item.place}</p>
-              </li>
+          <h2>Writing</h2>
+          <ul className="record-cites" data-sc-in data-sc-stagger="36">
+            {publications.map((item) => (
+              <li key={item}>{item}</li>
             ))}
           </ul>
         </div>
         <div>
-          <p className="eyebrow">Skills</p>
           <h2 id="skills-title">Drawing desk</h2>
-          <ul className="tool-list">
+          <ul className="record-tools" data-sc-in data-sc-stagger="28">
             {tools.map((tool) => (
               <li key={tool.group}>
                 <span>{tool.group}</span>
@@ -179,51 +116,66 @@ export function About() {
               </li>
             ))}
           </ul>
-          <p className="score-note">{scores[0]}</p>
+          <p className="record-score">{scores[0]}</p>
         </div>
       </section>
 
-      <section className="about-block" aria-labelledby="activities-title">
-        <p className="eyebrow">Leadership</p>
-        <h2 id="activities-title">At RUET</h2>
-        <ul className="fact-list">
-          {activities.map((item) => (
-            <li key={item.title}>
-              <div className="fact-head">
-                <h3>{item.title}</h3>
-                <time>{item.when}</time>
-              </div>
-              <p className="fact-note">{item.place}</p>
-            </li>
-          ))}
-        </ul>
+      <section className="record-split" data-sc-act="flow">
+        <div>
+          <h2>Further study</h2>
+          <ol className="record-facts" data-sc-in>
+            {workshops.map((item) => (
+              <li key={item.title}>
+                <div className="fact-head">
+                  <h3>{item.title}</h3>
+                  <time>{item.when}</time>
+                </div>
+                <p className="fact-place">{item.place}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+        <div>
+          <h2>At RUET</h2>
+          <ol className="record-facts" data-sc-in>
+            {activities.map((item) => (
+              <li key={item.title}>
+                <div className="fact-head">
+                  <h3>{item.title}</h3>
+                  <time>{item.when}</time>
+                </div>
+                <p className="fact-place">{item.place}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
       </section>
 
-      <section aria-labelledby="roles-title" className="about-block">
-        <p className="eyebrow">Selected roles</p>
-        <h2 id="roles-title">What I took on</h2>
-        <ul className="role-list">
+      <section className="record-block" data-sc-act="flow" aria-labelledby="roles-title">
+        <h2 id="roles-title">Projects</h2>
+        <ol className="record-roles" data-sc-in data-sc-stagger="30">
           {projects.map((project) => (
             <li key={project.slug}>
-              <span>{project.number}</span>
-              <div>
-                <h3>{project.title}</h3>
-                <p>{project.role}</p>
-              </div>
-              <em>{project.authorship}</em>
+              <Link to={`/work/${project.slug}`}>
+                <span className="role-num">{project.number}</span>
+                <span className="role-copy">
+                  <strong>{project.title}</strong>
+                  <span>{project.role}</span>
+                </span>
+                <span className="role-auth">{project.authorship}</span>
+              </Link>
             </li>
           ))}
-        </ul>
+        </ol>
       </section>
 
-      <section className="about-block" aria-labelledby="references-title">
-        <p className="eyebrow">References</p>
-        <h2 id="references-title">Ask them</h2>
-        <ul className="ref-list">
+      <section className="record-block" data-sc-act="flow" aria-labelledby="references-title">
+        <h2 id="references-title">References</h2>
+        <ul className="record-refs" data-sc-in data-sc-stagger="40">
           {references.map((item) => (
             <li key={item.email}>
               <h3>{item.name}</h3>
-              <p>{item.role}</p>
+              <p className="fact-place">{item.role}</p>
               <p className="fact-note">{item.place}</p>
               <a href={`mailto:${item.email}`}>{item.email}</a>
             </li>
@@ -231,7 +183,7 @@ export function About() {
         </ul>
       </section>
 
-      <Contact />
+      <Colophon />
     </article>
   );
 }

@@ -13,3 +13,6 @@ dist
 # Conversion scratch
 /tmp-convert
 *.tsbuildinfo
+
+# Local verification frames
+/lab

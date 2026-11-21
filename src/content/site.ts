@@ -4,7 +4,7 @@ export const person = {
   focus: 'Cultural landscapes and community-engaged design',
   school: 'B.Arch, Rajshahi University of Engineering & Technology',
   place: 'Dhaka, Bangladesh',
-  line: 'Cultural landscapes, indigenous settlements, and the public life of a street.',
+  line: 'Architectural designer. Cultural landscapes, indigenous settlements, and public streets.',
   email: 'mahparamaisha0@gmail.com',
   linkedin: 'https://www.linkedin.com/in/maisha-mahpara',
 };

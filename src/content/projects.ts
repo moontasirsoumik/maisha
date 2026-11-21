@@ -110,7 +110,7 @@ export const projects: Project[] = [
       {
         id: 'question',
         eyebrow: 'The question',
-        title: 'A place to hold a living culture.',
+        title: 'The question',
         body: [
           'Rangamati is home to twelve indigenous communities whose cultural identity is slowly eroding, driven by inadequate cultural infrastructure and the dominance of mainstream influences. The thesis asks how architecture can give these communities a place to learn, practise, perform, and pass on their cultures, on their own terms and on their own land.',
         ],
@@ -119,7 +119,7 @@ export const projects: Project[] = [
       {
         id: 'research',
         eyebrow: 'Research',
-        title: 'How cultural values become built form.',
+        title: 'Research',
         body: [
           'The traditions are well documented. Their spatial practices are not. Through literature, field surveys, and conversations with community members, I studied hill and lakeside settlements: elevated structures that follow the terrain, lightweight local materials, and flexible open spaces that support communal life without formal courtyards.',
           'I also mapped the seasonal rhythm of jhum cultivation and the Baisabi new-year festivals that shape everyday life.',
@@ -129,7 +129,7 @@ export const projects: Project[] = [
       {
         id: 'settlement',
         eyebrow: 'Concept',
-        title: 'A hill settlement, not a single building.',
+        title: 'The settlement',
         body: [
           'Museum, academy, workshops, dormitory, and ethnic shops step along the contours on stilts. Terraced paths and ramps climb from the Kaptai Lake edge, with an open performance ground at the heart of the complex.',
           'The design builds with the steep terrain instead of cutting it, which reduces landslide risk. Bamboo, thatch, and timber detailing are drawn from local building traditions, set against modern construction where it is needed.',
@@ -139,7 +139,7 @@ export const projects: Project[] = [
       {
         id: 'in-use',
         eyebrow: 'In use',
-        title: 'Learn, exhibit, perform.',
+        title: 'The buildings',
         body: [
           'The institute gives the communities a shared place to learn, exhibit, and perform. The sequence moves from the lake edge through workshops and shops to the academy, the museum, and the open ground.',
         ],
@@ -157,7 +157,7 @@ export const projects: Project[] = [
     studio: 'Architecture Design Studio 5-1, B.Arch, RUET',
     authorship: 'Individual',
     role: 'Author of the cultural complex.',
-    lead: 'A cultural oasis on a two-acre city site: a place to learn, practise, exhibit, and celebrate, open every day.',
+    lead: 'A cultural complex on a two-acre site in Khulshi: a place to learn, practise, exhibit, and celebrate, open every day.',
     cover: 'approach',
     hero: 'approach',
     plates: [
@@ -177,7 +177,7 @@ export const projects: Project[] = [
       {
         id: 'oasis',
         eyebrow: 'Premise',
-        title: 'Open every day.',
+        title: 'The brief',
         body: [
           'Medley is a cultural complex on a two-acre site in Khulshi, imagined as a cultural oasis in a busy city. The brief is a place to learn, practise, exhibit, and celebrate culture, not a building that opens only for events.',
           'Learn, foster, and exhibit became the three public actions. An escape from everyday life, and also a way of passing cultural roots on.',
@@ -187,16 +187,16 @@ export const projects: Project[] = [
       {
         id: 'ground',
         eyebrow: 'The ground',
-        title: 'The open space is the main room.',
+        title: 'The courtyard',
         body: [
-          'Three blocks — academy, exhibition, and auditorium — sit around a courtyard, a water body, and an amphitheatre. The ground between the buildings is the main public space, used for open-air performance, gathering, and ordinary days.',
+          'Three blocks, academy, exhibition, and auditorium, sit around a courtyard, a water body, and an amphitheatre. The ground between the buildings is the main public space, used for open-air performance, gathering, and ordinary days.',
         ],
         plates: ['plan', 'courtyard', 'amphitheatre'],
       },
       {
         id: 'drawings',
         eyebrow: 'Drawings',
-        title: 'Plans, sections, elevations.',
+        title: 'Drawings',
         body: [
           'The floor plans stack the academy, exhibition, and auditorium so each can work alone and still open onto the shared ground. Sections and elevations study the timber screen, the perforated flanks, and the courtyard between them.',
         ],
@@ -236,7 +236,7 @@ export const projects: Project[] = [
       {
         id: 'spine',
         eyebrow: 'The corridor',
-        title: 'A hot, congested street that should belong to people.',
+        title: 'The corridor',
         body: [
           'The commercial spine from Railgate to Borokuthi and the Padma riverfront is the busiest public corridor in Rajshahi. It is also congested, hot, polluted, and hostile to pedestrians. The project reimagines it as a comfortable, green, and walkable street.',
         ],
@@ -245,7 +245,7 @@ export const projects: Project[] = [
       {
         id: 'survey',
         eyebrow: 'Process',
-        title: 'The spine, walked and counted.',
+        title: 'The survey',
         body: [
           'We surveyed the whole spine on foot: traffic counts at six stations across three time slots, noise and air-quality readings, and mapping of pavements, parking, vendors, street trees, sunlight, and daily activities. A node-by-node analysis showed what each junction needed.',
           'My part was the site survey, observation, and activity mapping, then the masterplan interventions, the Padma riverfront, the road sections, and the project animation.',
@@ -255,7 +255,7 @@ export const projects: Project[] = [
       {
         id: 'nodes',
         eyebrow: 'Interventions',
-        title: 'A chain of nodes, tied by shade.',
+        title: 'The nodes',
         body: [
           'The spine is a chain of nodes, each with its own intervention, tied together by a continuous shaded walkway, cycle track, and planting. Railgate becomes a linear park with an elevated shaded plaza. New Market becomes a shared space with a vendor plaza and roof garden. Pocket parks and restored ponds sit between Olokar Mor and Gonokpara. Zero Point takes vehicles below and gives the plaza back to the street. The Padma edge becomes a riverfront walk, cycle track, play zone, and watch tower.',
           'Native shade trees, green roofs, and green facades are there to cut the urban heat.',
@@ -288,7 +288,7 @@ export const projects: Project[] = [
       {
         id: 'site',
         eyebrow: 'The site',
-        title: 'Housing that keeps the open ground.',
+        title: 'The site',
         body: [
           'A 43-acre greenfield site among farmland and ponds at Nader Hajir Mor, planned as affordable, inclusive, high-density housing for three income groups.',
           'We studied Uposohor, an existing neighbourhood of Rajshahi, layer by layer. Its figure-ground from 2016 to 2023 shows open space shrinking as buildings grow taller. That reading set the rule for this site: density without giving the ground away.',
@@ -298,7 +298,7 @@ export const projects: Project[] = [
       {
         id: 'belt',
         eyebrow: 'Concept',
-        title: 'A green and blue belt through every cluster.',
+        title: 'The green and blue belt',
         body: [
           'A continuous green and blue belt runs through the site and links every housing cluster. Zones along it serve physical health, mental health, and the environment: walking and cycle tracks, an amphitheatre, a zen garden, waterside decks, a botanical garden, and habitats for birds and butterflies surveyed in Rajshahi. About 41 percent of the site stays green and water.',
           'Cars stay at the perimeter and in basements, so the belt remains fully pedestrian. Every cluster courtyard opens onto it.',
@@ -308,7 +308,7 @@ export const projects: Project[] = [
       {
         id: 'homes',
         eyebrow: 'My role',
-        title: 'From the survey to the high-income apartments.',
+        title: 'My part of the project',
         body: [
           'I produced the figure-ground studies and the existing tree mapping, built up the concept and the masterplan zoning, designed the high-income apartments, and developed the sustainable strategies.',
           'Homes run from 400-square-foot studios to large duplexes, grouped around light wells for daylight and cross-ventilation. Wind and radiation studies, shading louvres, green roofs and walls, solar panels, and water treatment sit in the same system.',
@@ -339,7 +339,7 @@ export const projects: Project[] = [
       {
         id: 'place',
         eyebrow: 'The place',
-        title: 'Forty years of a small shop, and the life around it.',
+        title: 'The plaza',
         body: [
           'Tukitaki Chattar grew around a small shop opened some forty years ago. It became one of the liveliest student hangouts on campus: a place to eat, shop, study, meet, and perform. The project keeps that spirit and fixes what stops students from fully using it.',
         ],
@@ -348,7 +348,7 @@ export const projects: Project[] = [
       {
         id: 'trees',
         eyebrow: 'Concept',
-        title: 'The new plan is drawn around the canopies.',
+        title: 'Around the trees',
         body: [
           'Every existing tree was mapped and kept: rain tree, siris, tamarind, and mango. The new design is laid out around their canopies.',
           'There was no walkway or bike parking, so the plan adds paved paths and designated cycle and motorbike parking. Poor drainage and slippery paths become permeable concrete-block paving and a bioretention basin. Cooking and serving get designated counters. Waste moves behind a green wall. Eating and study get a picnic-table food court, a pergola study shed, and an open stage under the trees.',
@@ -361,7 +361,7 @@ export const projects: Project[] = [
     slug: 'music-bistro',
     number: '06',
     title: 'Music Bistro',
-    subtitle: 'Where melody and flavour converge',
+    subtitle: 'A cafe with a live stage',
     place: 'Interior studio',
     year: 'Studio 4-1',
     studio: 'Interior Design Studio 4-1, RUET',
@@ -383,7 +383,7 @@ export const projects: Project[] = [
       {
         id: 'room',
         eyebrow: 'Atmosphere',
-        title: 'Food, and a set, in the same room.',
+        title: 'The room',
         body: [
           'Music Bistro brings together the relaxed feel of a cafe and the energy of live music. Acoustic sessions, jazz nights, and open mics share the room with people who came to eat.',
         ],
@@ -392,7 +392,7 @@ export const projects: Project[] = [
       {
         id: 'stage',
         eyebrow: 'My role',
-        title: 'The performance stage.',
+        title: 'The stage',
         body: [
           'This was a group studio. I designed the performance stage and drew its plan, section, and elevation, so the music has a clear focus without turning the cafe into an auditorium.',
         ],
@@ -404,7 +404,7 @@ export const projects: Project[] = [
     slug: 'living-skyscraper',
     number: '07',
     title: 'Design of a Living Skyscraper',
-    subtitle: 'An icon for the emerging economy',
+    subtitle: 'A mixed-use tower in New Delhi',
     place: 'New Delhi, India',
     year: 'Studio 3-2',
     studio: 'Design Studio 3-2, B.Arch, RUET',
@@ -423,7 +423,7 @@ export const projects: Project[] = [
       {
         id: 'stack',
         eyebrow: 'Programme',
-        title: 'A city, stacked.',
+        title: 'The programme',
         body: [
           'A mixed-use high-rise that stacks retail, corporate, and hospitality functions into one vertical hub. The podium holds a shopping mall, cineplex, and food court. The tower above holds rentable offices, corporate headquarters, banks, banquet halls, a hotel, and restaurants.',
         ],
@@ -432,7 +432,7 @@ export const projects: Project[] = [
       {
         id: 'climate',
         eyebrow: 'Climate and structure',
-        title: 'Delhi’s wind, heat, and air, carried by a diagrid.',
+        title: 'Climate and structure',
         body: [
           'The design responds to Delhi’s composite climate, prevailing winds, and air pollution. The tower is carried by a diagrid structure with mega columns. Public life stays in the podium and the lower tower. Offices and the hotel take the floors above.',
         ],
@@ -462,7 +462,7 @@ export const projects: Project[] = [
       {
         id: 'skills',
         eyebrow: 'The brief',
-        title: 'The programme came from the local demand.',
+        title: 'The brief',
         body: [
           'Empower is a skill development centre shaped by research in Rajshahi and Chapainawabganj. The skills most in demand locally became the spatial programme: classrooms, language labs, computer facilities, and hands-on wood and civil works workshops, with accommodation on site.',
         ],
@@ -471,7 +471,7 @@ export const projects: Project[] = [
       {
         id: 'campus',
         eyebrow: 'The campus',
-        title: 'Learning, living, and making as one place.',
+        title: 'The campus',
         body: [
           'Learning, living, and training are organised as one accessible, adaptable campus. The plan ties workshops and classrooms to shared outdoor rooms. The elevation uses a timber screen of organic openings, a biophilic analog for the planted courts behind it.',
         ],
