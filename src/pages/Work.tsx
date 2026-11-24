@@ -45,7 +45,7 @@ function Work({ project }: { project: Project }) {
   useEffect(() => {
     document.title = `${project.title}, ${project.place}`;
     return () => {
-      document.title = 'Maisha Mahpara, Architecture';
+      document.title = 'Maisha Mahpara, Architect';
     };
   }, [project.title, project.place]);
   usePageMotion(root, project.slug);

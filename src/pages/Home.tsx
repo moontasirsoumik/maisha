@@ -53,7 +53,7 @@ export function Home() {
 
   usePageTop('home');
   useEffect(() => {
-    document.title = 'Maisha Mahpara, Architecture';
+    document.title = 'Maisha Mahpara, Architect';
   }, []);
 
   useGSAP(
