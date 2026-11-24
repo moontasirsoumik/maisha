@@ -27,8 +27,11 @@ A visitor does not download the whole set. The cover loads one plate. A case stu
 ## What ships
 
 - Cover, about, contact, and eight case studies.
-- Warm paper, ink, one brick rule, Fraunces, Bricolage Grotesque, Plus Jakarta Sans.
-- Native scroll. No smooth-scroll library. One thesis pin on desktop. Reduced motion removes movement.
+- Limewash paper, umber ink, one slate signal. Sentient over Hanken Grotesk. See `DESIGN.md`.
+- Native scroll with GSAP ScrollTrigger. No smooth-scroll library. One hero pin on desktop. Reduced motion removes movement.
+- `npm run crops` style step: `node scripts/make-crops.mjs` rebuilds the hero and index crops after a `convert`.
+- `node scripts/make-layers.mjs` rebuilds the ink drawings, the keyed horizon and the section strip from the `-full` masters. If a crop box changes, update the sizes in `inks` in `src/content/projects.ts`.
+- `node scripts/make-cutouts.mjs` rebuilds the tower, plaza and hut cut-outs. It prints the hut layer positions, which go into `hut` in `src/content/projects.ts`.
 - `Projects/` stays on disk and is gitignored. `npm run convert` rebuilds `public/work/`.
 
 ## File rules

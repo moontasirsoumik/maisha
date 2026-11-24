@@ -1,8 +1,6 @@
 import { useRef } from 'react';
-import { Link } from 'react-router-dom';
-import { Colophon } from '../folio/Colophon';
-import { useScrollCraft } from '../folio/useScrollCraft';
-import { projects } from '../content/projects';
+import { Close } from '../components/Close';
+import { ground } from '../content/projects';
 import {
   activities,
   education,
@@ -12,178 +10,148 @@ import {
   portrait,
   practice,
   publications,
-  references,
   scores,
   tools,
   workshops,
 } from '../content/site';
+import { usePageMotion, usePageTop } from '../motion/motion';
 
 export function About() {
   const root = useRef<HTMLElement>(null);
-  useScrollCraft(root, 'about');
+  usePageTop('about');
+  usePageMotion(root, 'about');
 
   return (
-    <article className="folio-about" ref={root}>
-      <header className="record-open" data-sc-act="flow" data-sc-travel>
-        <div data-sc-in data-sc-stagger="40">
-          <h1>{person.name}</h1>
-          <p className="record-focus">{person.focus}</p>
-          <p className="record-meta">{person.place}</p>
-        </div>
-        <figure className="record-portrait">
-          <div className="record-frame">
-            <img
-              src={portrait.src}
-              alt={portrait.alt}
-              width={portrait.width}
-              height={portrait.height}
-              fetchPriority="high"
-              decoding="async"
-            />
-          </div>
-        </figure>
-      </header>
-
-      <section className="record-practice" data-sc-act="flow">
-        <div className="record-measure" data-sc-in data-sc-stagger="40">
+    <article className="about" ref={root}>
+      <header className="about-head container">
+        <div className="about-copy" data-rise="group">
+          <h1 id="about-title">{person.name}</h1>
+          <p className="lead">Architectural designer in Dhaka. {person.school}, 2025.</p>
           {practice.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
           ))}
+          <p className="about-links">
+            <a className="btn" href={`mailto:${person.email}`}>
+              Write to me
+            </a>
+            <a className="link" href={person.linkedin} target="_blank" rel="noreferrer">
+              LinkedIn
+            </a>
+          </p>
         </div>
-      </section>
+        <figure className="portrait" data-rise>
+          <img src={portrait.src} alt={portrait.alt} width={portrait.width} height={portrait.height} fetchPriority="high" />
+        </figure>
+      </header>
 
-      <section className="record-block" data-sc-act="flow" aria-labelledby="interests-title">
+      <div className="ground container" aria-hidden="true">
+        <img src={ground.src} alt="" width={ground.width} height={ground.height} loading="lazy" decoding="async" data-slide />
+      </div>
+
+      <section className="record container" aria-labelledby="interests-title">
         <h2 id="interests-title">Interests</h2>
-        <ul data-sc-in data-sc-stagger="36">
+        <ul className="record-list" data-rise="group">
           {interests.map((item) => (
-            <li key={item}>{item}</li>
+            <li key={item}>
+              <p>{item}</p>
+            </li>
           ))}
         </ul>
       </section>
 
-      <section className="record-block" data-sc-act="flow" aria-labelledby="education-title">
-        <h2 id="education-title">Training</h2>
-        <ol className="record-facts" data-sc-in data-sc-stagger="40">
-          {education.map((item) => (
-            <li key={item.title}>
-              <div className="fact-head">
-                <h3>{item.title}</h3>
-                <time>{item.when}</time>
-              </div>
-              <p className="fact-place">{item.place}</p>
-              <p className="fact-note">{item.note}</p>
-            </li>
-          ))}
-        </ol>
-      </section>
-
-      <section className="record-block" data-sc-act="flow" aria-labelledby="experience-title">
-        <h2 id="experience-title">Practice and research</h2>
-        <ol className="record-facts" data-sc-in data-sc-stagger="40">
+      <section className="record container" aria-labelledby="practice-title">
+        <h2 id="practice-title">Practice</h2>
+        <ol className="record-list">
           {experience.map((item) => (
-            <li key={item.title}>
-              <div className="fact-head">
+            <li key={item.title} data-rise>
+              <time>{item.when}</time>
+              <div>
                 <h3>{item.title}</h3>
-                <time>{item.when}</time>
+                <p className="muted">{item.place}</p>
+                <ul className="points">
+                  {item.points.map((point) => (
+                    <li key={point}>{point}</li>
+                  ))}
+                </ul>
               </div>
-              <p className="fact-place">{item.place}</p>
-              <ul className="fact-points">
-                {item.points.map((point) => (
-                  <li key={point}>{point}</li>
-                ))}
-              </ul>
             </li>
           ))}
         </ol>
       </section>
 
-      <section className="record-split" data-sc-act="flow">
-        <div>
-          <h2>Writing</h2>
-          <ul className="record-cites" data-sc-in data-sc-stagger="36">
-            {publications.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <h2 id="skills-title">Drawing desk</h2>
-          <ul className="record-tools" data-sc-in data-sc-stagger="28">
-            {tools.map((tool) => (
-              <li key={tool.group}>
-                <span>{tool.group}</span>
-                {tool.items}
-              </li>
-            ))}
-          </ul>
-          <p className="record-score">{scores[0]}</p>
-        </div>
-      </section>
-
-      <section className="record-split" data-sc-act="flow">
-        <div>
-          <h2>Further study</h2>
-          <ol className="record-facts" data-sc-in>
-            {workshops.map((item) => (
-              <li key={item.title}>
-                <div className="fact-head">
-                  <h3>{item.title}</h3>
-                  <time>{item.when}</time>
-                </div>
-                <p className="fact-place">{item.place}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
-        <div>
-          <h2>At RUET</h2>
-          <ol className="record-facts" data-sc-in>
-            {activities.map((item) => (
-              <li key={item.title}>
-                <div className="fact-head">
-                  <h3>{item.title}</h3>
-                  <time>{item.when}</time>
-                </div>
-                <p className="fact-place">{item.place}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      <section className="record-block" data-sc-act="flow" aria-labelledby="roles-title">
-        <h2 id="roles-title">Projects</h2>
-        <ol className="record-roles" data-sc-in data-sc-stagger="30">
-          {projects.map((project) => (
-            <li key={project.slug}>
-              <Link to={`/work/${project.slug}`}>
-                <span className="role-num">{project.number}</span>
-                <span className="role-copy">
-                  <strong>{project.title}</strong>
-                  <span>{project.role}</span>
-                </span>
-                <span className="role-auth">{project.authorship}</span>
-              </Link>
+      <section className="record container" aria-labelledby="training-title">
+        <h2 id="training-title">Training</h2>
+        <ol className="record-list">
+          {education.map((item) => (
+            <li key={item.title} data-rise>
+              <time>{item.when}</time>
+              <div>
+                <h3>{item.title}</h3>
+                <p className="muted">{item.place}</p>
+                <p>{item.note}</p>
+              </div>
+            </li>
+          ))}
+          {workshops.map((item) => (
+            <li key={item.title} data-rise>
+              <time>{item.when}</time>
+              <div>
+                <h3>{item.title}</h3>
+                <p className="muted">{item.place}</p>
+              </div>
             </li>
           ))}
         </ol>
       </section>
 
-      <section className="record-block" data-sc-act="flow" aria-labelledby="references-title">
-        <h2 id="references-title">References</h2>
-        <ul className="record-refs" data-sc-in data-sc-stagger="40">
-          {references.map((item) => (
-            <li key={item.email}>
-              <h3>{item.name}</h3>
-              <p className="fact-place">{item.role}</p>
-              <p className="fact-note">{item.place}</p>
-              <a href={`mailto:${item.email}`}>{item.email}</a>
+      <section className="record container" aria-labelledby="writing-title">
+        <h2 id="writing-title">Writing</h2>
+        <ul className="record-list" data-rise="group">
+          {publications.map((item) => (
+            <li key={item}>
+              <p>{item}</p>
             </li>
           ))}
         </ul>
       </section>
 
-      <Colophon />
+      <section className="record container" aria-labelledby="tools-title">
+        <h2 id="tools-title">Tools</h2>
+        <dl className="record-list tools" data-rise="group">
+          {tools.map((item) => (
+            <div key={item.group}>
+              <dt>{item.group}</dt>
+              <dd>{item.items}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+
+      <section className="record container" aria-labelledby="also-title">
+        <h2 id="also-title">Also</h2>
+        <ul className="record-list">
+          {activities.map((item) => (
+            <li key={item.title} data-rise>
+              <time>{item.when}</time>
+              <div>
+                <h3>{item.title}</h3>
+                <p className="muted">{item.place}</p>
+              </div>
+            </li>
+          ))}
+          {scores.map((item) => (
+            <li key={item} data-rise>
+              <time>2026</time>
+              <div>
+                <h3>Language</h3>
+                <p className="muted">{item}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <Close />
     </article>
   );
 }

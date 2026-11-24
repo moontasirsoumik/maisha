@@ -1,4 +1,4 @@
-import type { Plate, Project } from './types';
+import type { Picture, Plate, Project } from './types';
 
 type Size = { width: number; height: number; fullWidth: number; fullHeight: number };
 
@@ -328,7 +328,7 @@ export const projects: Project[] = [
     authorship: 'Individual',
     role: 'Author. Course teacher: Md. Asaduzzaman.',
     lead: 'The plaza in front of the central library, kept as the hangout it already is, and made fit to use.',
-    cover: 'cover',
+    cover: 'render',
     hero: 'render',
     plates: [
       plate('nostalgia', 'cover', 'Axonometric of the redesigned student plaza under existing trees.', 'The plaza', 'render'),
@@ -494,4 +494,239 @@ export function plateById(project: Project, id: string) {
 export function nextProject(slug: string) {
   const index = projects.findIndex((project) => project.slug === slug);
   return projects[(index + 1) % projects.length];
+}
+
+/** Clean crops cut by scripts/make-crops.mjs, for plates whose source carries baked-in titles. */
+const crops: Record<string, { thumb?: Picture; banner?: Picture }> = {
+  'cultural-roots': {
+    thumb: {
+      src: '/work/cultural-roots/thumb.webp',
+      width: 1920,
+      height: 826,
+      alt: 'Bird’s-eye view of the institute stepping down to Kaptai Lake.',
+    },
+    banner: {
+      src: '/work/cultural-roots/hero.webp',
+      width: 1800,
+      height: 1020,
+      alt: 'Museum block raised on stilts above the terraces at Rangamati.',
+    },
+  },
+  rajshahi: {
+    thumb: {
+      src: '/work/rajshahi/thumb.webp',
+      width: 1170,
+      height: 585,
+      alt: 'Axonometric of the proposed Railgate plaza, cycle track, and shaded street.',
+    },
+  },
+  'urban-dwelling': {
+    thumb: {
+      src: '/work/urban-dwelling/thumb.webp',
+      width: 840,
+      height: 1080,
+      alt: 'Housing towers and the green belt at Poba, Rajshahi, from above.',
+    },
+    banner: {
+      src: '/work/urban-dwelling/banner.webp',
+      width: 1920,
+      height: 700,
+      alt: 'Aerial of the housing clusters set in a green belt at Poba, Rajshahi.',
+    },
+  },
+};
+
+/** Ink line-work cut from each project's plan or section by scripts/make-layers.mjs. */
+const inks: Record<string, [number, number]> = {
+  'cultural-roots': [1800, 1516],
+  medley: [1228, 1298],
+  rajshahi: [913, 269],
+  'urban-dwelling': [616, 840],
+  nostalgia: [1800, 788],
+  'music-bistro': [748, 724],
+  'living-skyscraper': [792, 300],
+  empower: [1100, 1105],
+};
+
+export function inkOf(project: Project): Picture {
+  const [width, height] = inks[project.slug];
+  return { src: `/work/${project.slug}/ink.webp`, width, height, alt: '' };
+}
+
+/** Objects lifted off their white sheets by scripts/make-cutouts.mjs, set on a tile they break out of. */
+export interface Cutout extends Picture {
+  /** The tile behind the object, as a CSS inset inside the picture's box; without one the object floats. */
+  tile?: string;
+}
+
+const cutouts: Record<string, Cutout> = {
+  'living-skyscraper': {
+    src: '/work/living-skyscraper/tower-cut.webp',
+    width: 1024,
+    height: 1352,
+    alt: 'The diagrid tower rising from its terraced podium and park, drawn over the site plan.',
+    tile: '40% 0 0 0',
+  },
+  nostalgia: {
+    src: '/work/nostalgia/island-cut.webp',
+    width: 1600,
+    height: 806,
+    alt: 'Axonometric of the plaza: the study shed, food stalls and open stage set among the old trees.',
+  },
+};
+
+export function cutOf(project: Project): Cutout | undefined {
+  return cutouts[project.slug];
+}
+
+/** The object that stands for each project in the index, traced out of its sheet by scripts/make-cutouts.mjs. */
+const objects: Record<string, Picture> = {
+  'cultural-roots': {
+    src: '/work/cultural-roots/object.webp',
+    width: 408,
+    height: 447,
+    alt: 'Exploded axonometric of a hill hut: thatch roof, steel truss, bamboo walls and the timber deck with its stair.',
+  },
+  medley: {
+    src: '/work/medley/object.webp',
+    width: 1400,
+    height: 933,
+    alt: 'Aerial of the hub: the tower, the long roofs and the sunken amphitheatre court.',
+  },
+  rajshahi: {
+    src: '/work/rajshahi/object.webp',
+    width: 1160,
+    height: 442,
+    alt: 'Isometric of the rail gate plaza and the street spine, with trees, stalls and crossings.',
+  },
+  'urban-dwelling': {
+    src: '/work/urban-dwelling/object.webp',
+    width: 650,
+    height: 567,
+    alt: 'Isometric of the shared spine: utility block, pergola, round pool, seating and the muktomoncho canopy.',
+  },
+  nostalgia: {
+    src: '/work/nostalgia/island-cut.webp',
+    width: 1600,
+    height: 806,
+    alt: 'Axonometric of the plaza: the study shed, food stalls and open stage set among the old trees.',
+  },
+  'music-bistro': {
+    src: '/work/music-bistro/object.webp',
+    width: 1300,
+    height: 566,
+    alt: 'The lounge ring: timber-clad sofas in woven grey around a round walnut table.',
+  },
+  'living-skyscraper': {
+    src: '/work/living-skyscraper/object.webp',
+    width: 901,
+    height: 1189,
+    alt: 'The diagrid tower rising from its terraced podium onto a green plot.',
+  },
+  empower: {
+    src: '/work/empower/object.webp',
+    width: 1115,
+    height: 594,
+    alt: 'Aerial of the skill centre: its pitched roofs and courts on their plot.',
+  },
+};
+
+export function objectOf(project: Project): Picture {
+  return objects[project.slug];
+}
+
+/**
+ * Renders split into depth layers by scripts/make-scenes.mjs. The sky is cut away, so the buildings
+ * stand on the paper; each layer is the full frame, and a nearer layer may only rise over the ones behind.
+ */
+export interface Scene {
+  width: number;
+  height: number;
+  /** Share of empty sky cut off the top of the frame. */
+  trim: number;
+  /** The place's name set large in its sky, behind the buildings, and its top as a share of the frame. */
+  word: string;
+  wordTop: number;
+  layers: string[];
+}
+
+const scenes: Record<string, Omit<Scene, 'layers'> & { depth: number }> = {
+  nostalgia: { width: 2000, height: 1125, trim: 0, word: 'Tukitaki', wordTop: 0.1, depth: 2 },
+  medley: { width: 1800, height: 1200, trim: 0.14, word: 'Khulshi', wordTop: 0.03, depth: 2 },
+  empower: { width: 1536, height: 1024, trim: 0.3, word: 'Rajshahi', wordTop: 0.12, depth: 2 },
+};
+
+export function sceneOf(project: Project): Scene | undefined {
+  const scene = scenes[project.slug];
+  if (!scene) return undefined;
+  const { depth, ...rest } = scene;
+  return { ...rest, layers: Array.from({ length: depth }, (_, n) => `/work/${project.slug}/scene-${n}.webp`) };
+}
+
+/** The thesis hut's structure in three layers, placed as fractions of the drawing's box. */
+export const hut = {
+  ratio: '480 / 832',
+  alt: 'Exploded axonometric of a thesis hut: thatch roof, steel truss on timber deck, and the steel frame below.',
+  layers: [
+    { src: '/work/cultural-roots/hut-1.webp', x: 0.0979, y: 0.024, w: 0.9021, lift: 0.16 },
+    { src: '/work/cultural-roots/hut-2.webp', x: 0, y: 0.1887, w: 0.9646, lift: 0.07 },
+    { src: '/work/cultural-roots/hut-3.webp', x: 0.0292, y: 0.4363, w: 0.8854, lift: -0.02 },
+  ],
+};
+
+export const horizon: Picture = {
+  src: '/work/cultural-roots/horizon.webp',
+  width: 2000,
+  height: 1100,
+  alt: '',
+};
+
+export const ground: Picture = {
+  src: '/work/cultural-roots/section-ink.webp',
+  width: 979,
+  height: 171,
+  alt: '',
+};
+
+const onWhite = new Set(['rajshahi', 'living-skyscraper']);
+
+/** Index pictures drawn on a white ground, printed straight onto the paper. */
+export function printsOnPaper(project: Project) {
+  return onWhite.has(project.slug);
+}
+
+function asPicture(plate: Plate): Picture {
+  return { src: plate.src, width: plate.width, height: plate.height, alt: plate.alt };
+}
+
+/** The picture that stands for a project in the index. */
+export function thumbOf(project: Project): Picture {
+  return crops[project.slug]?.thumb ?? asPicture(plateById(project, project.cover));
+}
+
+/** The wide picture at the head of a case study. */
+export function bannerOf(project: Project): Picture {
+  return crops[project.slug]?.banner ?? crops[project.slug]?.thumb ?? asPicture(plateById(project, project.hero));
+}
+
+/** Every plate in reading order: chapter plates first, then the rest. */
+export function platesInOrder(project: Project): Plate[] {
+  const seen = new Set<string>();
+  const ordered: Plate[] = [];
+  for (const chapter of project.chapters) {
+    for (const id of chapter.plates) {
+      if (seen.has(id)) continue;
+      seen.add(id);
+      ordered.push(plateById(project, id));
+    }
+  }
+  for (const plate of project.plates) {
+    if (!seen.has(plate.id)) ordered.push(plate);
+  }
+  return ordered;
+}
+
+export function loosePlates(project: Project): Plate[] {
+  const used = new Set(project.chapters.flatMap((chapter) => chapter.plates));
+  return project.plates.filter((plate) => !used.has(plate.id));
 }

@@ -9,6 +9,13 @@ export type Plate = {
   kind: 'render' | 'sheet';
 };
 
+export type Picture = {
+  src: string;
+  width: number;
+  height: number;
+  alt: string;
+};
+
 export type Chapter = {
   id: string;
   eyebrow: string;

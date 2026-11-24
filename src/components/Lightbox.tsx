@@ -2,12 +2,15 @@ import { useEffect, useRef, type DialogHTMLAttributes } from 'react';
 import type { Plate } from '../content/types';
 
 type Props = {
-  plate: Plate | null;
-  onClose: () => void;
+  plates: Plate[];
+  index: number | null;
+  onIndex: (index: number | null) => void;
 };
 
-export function Lightbox({ plate, onClose }: Props) {
+export function Lightbox({ plates, index, onIndex }: Props) {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const plate = index === null ? null : plates[index];
+  const count = plates.length;
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -19,37 +22,38 @@ export function Lightbox({ plate, onClose }: Props) {
   useEffect(() => {
     const dialog = dialogRef.current;
     if (!dialog) return;
-
+    const onClose = () => onIndex(null);
     const onClick = (event: MouseEvent) => {
-      if (event.target !== dialog) return;
-      const rect = dialog.getBoundingClientRect();
-      const outside =
-        event.clientX < rect.left ||
-        event.clientX > rect.right ||
-        event.clientY < rect.top ||
-        event.clientY > rect.bottom;
-      if (outside) onClose();
+      if (event.target === dialog) onIndex(null);
     };
-    const onCloseEvent = () => onClose();
-
+    dialog.addEventListener('close', onClose);
     dialog.addEventListener('click', onClick);
-    dialog.addEventListener('close', onCloseEvent);
     return () => {
+      dialog.removeEventListener('close', onClose);
       dialog.removeEventListener('click', onClick);
-      dialog.removeEventListener('close', onCloseEvent);
     };
-  }, [onClose]);
+  }, [onIndex]);
+
+  const step = (by: number) => {
+    if (index === null) return;
+    onIndex((index + by + count) % count);
+  };
 
   return (
     <dialog
       ref={dialogRef}
       className="lightbox"
-      aria-label={plate?.caption ?? 'Plate'}
+      aria-label={plate?.caption ?? 'Drawing'}
+      onKeyDown={(event) => {
+        if (event.key === 'ArrowRight') step(1);
+        if (event.key === 'ArrowLeft') step(-1);
+      }}
       {...({ closedby: 'any' } as DialogHTMLAttributes<HTMLDialogElement>)}
     >
       {plate ? (
         <div className="lightbox-sheet">
           <img
+            key={plate.full}
             src={plate.full}
             alt={plate.alt}
             width={plate.width}
@@ -57,10 +61,27 @@ export function Lightbox({ plate, onClose }: Props) {
             decoding="async"
           />
           <div className="lightbox-bar">
-            <p>{plate.caption}</p>
-            <button type="button" onClick={onClose}>
-              Close
-            </button>
+            <p>
+              <span>{plate.caption}</span>
+              <span className="lightbox-count">
+                {index! + 1} of {count}
+              </span>
+            </p>
+            <div className="lightbox-controls">
+              {count > 1 ? (
+                <>
+                  <button type="button" onClick={() => step(-1)}>
+                    Previous
+                  </button>
+                  <button type="button" onClick={() => step(1)}>
+                    Next
+                  </button>
+                </>
+              ) : null}
+              <button type="button" onClick={() => onIndex(null)} autoFocus>
+                Close
+              </button>
+            </div>
           </div>
         </div>
       ) : null}
