@@ -1,0 +1,11 @@
+{
+  "name": "Maisha Mahpara, Architecture",
+  "short_name": "Maisha",
+  "icons": [
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/favicon-32.png", "sizes": "32x32", "type": "image/png" }
+  ],
+  "theme_color": "#efeae3",
+  "background_color": "#efeae3",
+  "display": "browser"
+}

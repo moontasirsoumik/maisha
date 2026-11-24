@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { Close } from '../components/Close';
 import { CutFigure } from '../components/CutFigure';
@@ -42,6 +42,12 @@ function Work({ project }: { project: Project }) {
   const nextThumb = thumbOf(next);
 
   usePageTop(project.slug);
+  useEffect(() => {
+    document.title = `${project.title}, ${project.place}`;
+    return () => {
+      document.title = 'Maisha Mahpara, Architecture';
+    };
+  }, [project.title, project.place]);
   usePageMotion(root, project.slug);
 
   const show = (plate: Plate) => setOpen(ordered.findIndex((item) => item.id === plate.id));

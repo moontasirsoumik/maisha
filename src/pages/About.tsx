@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Close } from '../components/Close';
 import { ground } from '../content/projects';
 import {
@@ -19,6 +19,9 @@ import { usePageMotion, usePageTop } from '../motion/motion';
 export function About() {
   const root = useRef<HTMLElement>(null);
   usePageTop('about');
+  useEffect(() => {
+    document.title = `${person.name}, About`;
+  }, []);
   usePageMotion(root, 'about');
 
   return (

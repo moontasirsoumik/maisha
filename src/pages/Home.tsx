@@ -52,6 +52,9 @@ export function Home() {
   const ghost = inkOf(thesis);
 
   usePageTop('home');
+  useEffect(() => {
+    document.title = 'Maisha Mahpara, Architecture';
+  }, []);
 
   useGSAP(
     () => {
